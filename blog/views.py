@@ -63,3 +63,19 @@ def category_views(request, slug):
         'post': post
     }
     return render(request, 'category.html',context)
+
+#사진 촬영
+def take_picture(request):
+    print('take_picture')
+    if request.method == 'POST':
+        # POST 요청을 처리하는 로직을 여기에 추가
+        # 폼 데이터는 request.POST에서 가져올 수 있음
+
+        # 예: 폼 데이터를 처리하고 결과를 context에 담아 템플릿에 전달
+        context = {
+            'result': '스캔이 완료되었습니다.'  # 적절한 결과 메시지
+        }
+        return render(request, 'take_picture.html', context)
+    else:
+        # GET 요청 처리
+        return render(request, 'take_picture.html')

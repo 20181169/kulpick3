@@ -1,95 +1,231 @@
 /*
-	Future Imperfect by HTML5 UP
+	Eventually by HTML5 UP
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 */
 
-(function($) {
+(function() {
 
-	var	$window = $(window),
-		$body = $('body'),
-		$menu = $('#menu'),
-		$sidebar = $('#sidebar'),
-		$main = $('#main');
+	"use strict";
 
-	// Breakpoints.
-		breakpoints({
-			xlarge:   [ '1281px',  '1680px' ],
-			large:    [ '981px',   '1280px' ],
-			medium:   [ '737px',   '980px'  ],
-			small:    [ '481px',   '736px'  ],
-			xsmall:   [ null,      '480px'  ]
-		});
+	var	$body = document.querySelector('body');
+
+	// Methods/polyfills.
+
+		// classList | (c) @remy | github.com/remy/polyfills | rem.mit-license.org
+			!function(){function t(t){this.el=t;for(var n=t.className.replace(/^\s+|\s+$/g,"").split(/\s+/),i=0;i<n.length;i++)e.call(this,n[i])}function n(t,n,i){Object.defineProperty?Object.defineProperty(t,n,{get:i}):t.__defineGetter__(n,i)}if(!("undefined"==typeof window.Element||"classList"in document.documentElement)){var i=Array.prototype,e=i.push,s=i.splice,o=i.join;t.prototype={add:function(t){this.contains(t)||(e.call(this,t),this.el.className=this.toString())},contains:function(t){return-1!=this.el.className.indexOf(t)},item:function(t){return this[t]||null},remove:function(t){if(this.contains(t)){for(var n=0;n<this.length&&this[n]!=t;n++);s.call(this,n,1),this.el.className=this.toString()}},toString:function(){return o.call(this," ")},toggle:function(t){return this.contains(t)?this.remove(t):this.add(t),this.contains(t)}},window.DOMTokenList=t,n(Element.prototype,"classList",function(){return new t(this)})}}();
+
+		// canUse
+			window.canUse=function(p){if(!window._canUse)window._canUse=document.createElement("div");var e=window._canUse.style,up=p.charAt(0).toUpperCase()+p.slice(1);return p in e||"Moz"+up in e||"Webkit"+up in e||"O"+up in e||"ms"+up in e};
+
+		// window.addEventListener
+			(function(){if("addEventListener"in window)return;window.addEventListener=function(type,f){window.attachEvent("on"+type,f)}})();
 
 	// Play initial animations on page load.
-		$window.on('load', function() {
+		window.addEventListener('load', function() {
 			window.setTimeout(function() {
-				$body.removeClass('is-preload');
+				$body.classList.remove('is-preload');
 			}, 100);
 		});
 
-	// Menu.
-		$menu
-			.appendTo($body)
-			.panel({
-				delay: 500,
-				hideOnClick: true,
-				hideOnSwipe: true,
-				resetScroll: true,
-				resetForms: true,
-				side: 'right',
-				target: $body,
-				visibleClass: 'is-menu-visible'
-			});
+	// Slideshow Background.
+		(function() {
 
-	// Search (header).
-		var $search = $('#search'),
-			$search_input = $search.find('input');
+			// Settings.
+				var settings = {
 
-		$body
-			.on('click', '[href="#search"]', function(event) {
+					// Images (in the format of 'url': 'alignment').
+						images: {
+							'static/blog/images/bg04.jpg': 'center',
+							'static/blog/images/bg05.jpg': 'center',
+							'static/blog/images/bg06.jpg': 'center'
+						},
 
-				event.preventDefault();
+					// Delay.
+						delay: 3000
 
-				// Not visible?
-					if (!$search.hasClass('visible')) {
+				};
 
-						// Reset form.
-							$search[0].reset();
+			// Vars.
+				var	pos = 0, lastPos = 0,
+					$wrapper, $bgs = [], $bg,
+					k, v;
 
-						// Show.
-							$search.addClass('visible');
+			// Create BG wrapper, BGs.
+				$wrapper = document.createElement('div');
+					$wrapper.id = 'bg';
+					$body.appendChild($wrapper);
 
-						// Focus input.
-							$search_input.focus();
+				for (k in settings.images) {
 
-					}
+					// Create BG.
+						$bg = document.createElement('div');
+							$bg.style.backgroundImage = 'url("' + k + '")';
+							$bg.style.backgroundPosition = settings.images[k];
+							$wrapper.appendChild($bg);
 
-			});
+					// Add it to array.
+						$bgs.push($bg);
 
-		$search_input
-			.on('keydown', function(event) {
+				}
 
-				if (event.keyCode == 27)
-					$search_input.blur();
+			// Main loop.
+				$bgs[pos].classList.add('visible');
+				$bgs[pos].classList.add('top');
 
-			})
-			.on('blur', function() {
-				window.setTimeout(function() {
-					$search.removeClass('visible');
-				}, 100);
-			});
+				// Bail if we only have a single BG or the client doesn't support transitions.
+					if ($bgs.length == 1
+					||	!canUse('transition'))
+						return;
 
-	// Intro.
-		var $intro = $('#intro');
+				window.setInterval(function() {
 
-		// Move to main on <=large, back to sidebar on >large.
-			breakpoints.on('<=large', function() {
-				$intro.prependTo($main);
-			});
+					lastPos = pos;
+					pos++;
 
-			breakpoints.on('>large', function() {
-				$intro.prependTo($sidebar);
-			});
+					// Wrap to beginning if necessary.
+						if (pos >= $bgs.length)
+							pos = 0;
 
-})(jQuery);
+					// Swap top images.
+						$bgs[lastPos].classList.remove('top');
+						$bgs[pos].classList.add('visible');
+						$bgs[pos].classList.add('top');
+
+					// Hide last image after a short delay.
+						window.setTimeout(function() {
+							$bgs[lastPos].classList.remove('visible');
+						}, settings.delay / 2);
+
+				}, settings.delay);
+
+		})();
+
+	// Signup Form.
+		(function() {
+
+			// Vars.
+				var $form = document.querySelectorAll('#signup-form')[0],
+					$submit = document.querySelectorAll('#signup-form input[type="submit"]')[0],
+					$message;
+
+			// Bail if addEventListener isn't supported.
+				if (!('addEventListener' in $form))
+					return;
+
+			// Message.
+				$message = document.createElement('span');
+					$message.classList.add('message');
+					$form.appendChild($message);
+
+				$message._show = function(type, text) {
+
+					$message.innerHTML = text;
+					$message.classList.add(type);
+					$message.classList.add('visible');
+
+					window.setTimeout(function() {
+						$message._hide();
+					}, 3000);
+
+				};
+
+				$message._hide = function() {
+					$message.classList.remove('visible');
+				};
+
+			// Events.
+			// Note: If you're *not* using AJAX, get rid of this event listener.
+				$form.addEventListener('submit', function(event) {
+
+					event.stopPropagation();
+					event.preventDefault();
+
+					// Hide message.
+						$message._hide();
+
+					// Disable submit.
+						$submit.disabled = true;
+
+					// Process form.
+					// Note: Doesn't actually do anything yet (other than report back with a "thank you"),
+					// but there's enough here to piece together a working AJAX submission call that does.
+						window.setTimeout(function() {
+
+							// Reset form.
+								$form.reset();
+
+							// Enable submit.
+								$submit.disabled = false;
+
+							// Show message.
+								$message._show('success', 'Thank you!');
+								//$message._show('failure', 'Something went wrong. Please try again.');
+
+								document.addEventListener('DOMContentLoaded', function() {
+									var $message = document.createElement('span');
+									$message.classList.add('message');
+									document.body.appendChild($message);
+								
+									$message._show = function(type, text) {
+										$message.innerHTML = text;
+										$message.classList.add(type);
+										$message.classList.add('visible');
+								
+										window.setTimeout(function() {
+											$message._hide();
+										}, 3000);
+									};
+								
+									$message._hide = function() {
+										$message.classList.remove('visible');
+									};
+								
+									var $form = document.querySelector('#signup-form');
+									var $submit = $form.querySelector('button[type="submit"]');
+								
+									$form.addEventListener('submit', function(event) {
+										event.preventDefault();
+										$message._hide();
+								
+										// Disable submit.
+										$submit.disabled = true;
+								
+										// Process form.
+										var formData = new FormData($form);
+										var xhr = new XMLHttpRequest();
+								
+										xhr.open('POST', '/take_pictur/', true); // '/take_picture/'를 실제 뷰의 URL로 변경하세요.
+										xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+								
+										xhr.onreadystatechange = function() {
+											if (xhr.readyState === 4) {
+												if (xhr.status === 200) {
+													var response = JSON.parse(xhr.responseText);
+													// 서버 응답을 처리합니다.
+													if (response.status === 'success') {
+														$message._show('success', response.message);
+													} else {
+														$message._show('failure', '이미지 촬영에 실패했습니다.');
+													}
+												} else {
+													$message._show('failure', '서버 오류가 발생했습니다.');
+												}
+								
+												// Reset form and enable submit.
+												$form.reset();
+												$submit.disabled = false;
+											}
+										};
+								
+										xhr.send(formData);
+									});
+								});
+
+						}, 750);
+
+				});
+
+		})();
+
+})();

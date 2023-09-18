@@ -1,165 +1,46 @@
-{% extends "header.html" %}
-{% block content %}
-{% load static %}
+<!DOCTYPE HTML>
+<!--
+	Eventually by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	{% load static %}
+	<head>
+		<title>Eventually by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="{% static "blog/assets/css/main.css" %}" />
+	</head>
+	<body class="is-preload">
 
-<body class="is-preload">
-	<!-- Wrapper -->
-	<div id="wrapper">
-		<!-- Main -->
-		<div id="main">
+		<!-- Header -->
+			<header id="header" style="text-align: center;">
+				<h1>메뉴판 등록</h1>
+				<p>하세요 <!--<a href="http://html5up.net">링크</a>.--></p>
+			</header>
 
-			{% for p in post %}
-			{% for cat in category%}
-			<!-- Post -->
-			<article class="post">
-				<header>
-					<div class="title">
-						<h2><a href="/{{ p.slug }}-{{p.id}}">{{ p.title }}</a></h2>
-					</div>
-					<div class="meta">
-						<time class="published" datetime="{{ p.published|date:'d-m-Y'}}">{{ p.published|date:'d-m-Y'}}</time>
-						<a href="#" class="author"><span class="name">{{p.author}}</span>
-						<img src="{{p.author.avatar.url}}" alt="avatar" /></a>
-					</div>
-				</header>
-				<a href="single.html" class="image featured"><img src="{%static 'blog/images/pic01.jpg'%}" alt="" /></a>
-				<p>Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod
-					placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at. Phasellus sed ultricies mi non
-					congue ullam corper. Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta
-					lectus vitae, ultricies congue gravida diam non fringilla.</p>
-				<footer>
-					<ul class="actions">
-						<li><a href="/{{ p.slug }}-{{p.id}}" class="button large">Continue Reading</a></li>
-					</ul>
-					<ul class="stats">
-						<li><a href="category/{{cat.slug}}">{{p.category}}</a></li>
-						{% comment %} IF YOU WANT USING DJANGO TEMPLATE UNCOMMENT LINE OF CODE BELOW {% endcomment %}
-						{% comment %} <li><a href="#" class="icon solid fa-comment">{{p.count_comment}}</a></li> {% endcomment %}
-					</ul>
-				</footer>
-			</article>
-			{% endfor %}
-			{% endfor %}
-
-			<!-- Pagination -->
-			<ul class="actions pagination">
-				{% if post.has_previous %}
-				<li><a href="?page=1" class="button large previous">&laquo;</a></li>
-				<li><a href="?page={{ post.previous_page_number }}" class="button large previous">Previous Page</a></li>
-				{% else %}
-				<li><a href="#" class="disabled button large previous">&laquo;</a></li>
-				<li><a href="#" class=" disabled button large previous">Previous Page</a></li>
-				{% endif%}
-				<li>Page {{ post.number }} of {{ post.paginator.num_pages }}</li>
-				{% if post.has_next %}
-				<li><a href="?page={{ post.next_page_number }}" class="button large next">Next</a></li>
-				<li><a href="?page={{ post.paginator.num_pages }}" class="button large next">&raquo;</a></li>
-				{% else %}
-				<li><a href="#" class="disabled button large next">Next</a></li>
-				<li><a href="#" class="disabled button large next">&raquo;</a></li>
-				{% endif %}
-			</ul>
-
-		</div>
-
-		<!-- Sidebar -->
-		<section id="sidebar">
-
-			<!-- Intro -->
-			<section id="intro">
-				<a href="#" class="logo"><img src="{%static 'blog/images/logo.jpg'%}" alt="" /></a>
-				<header>
-					<h2>Future Imperfect</h2>
-					<p>Another fine responsive site template by <a href="http://html5up.net">HTML5 UP</a></p>
-				</header>
-			</section>
-
-			<!-- Mini Posts -->
-			<section>
-				<div class="mini-posts">
-
-					<!-- Mini Post -->
-					<article class="mini-post">
-						<header>
-							<h3><a href="single.html">Vitae sed condimentum</a></h3>
-							<time class="published" datetime="2015-10-20">October 20, 2015</time>
-							<a href="#" class="author"><img src="{%static 'blog/images/avatar.jpg'%}" alt="" /></a>
-						</header>
-						<a href="single.html" class="image"><img src="{%static 'blog/images/pic04.jpg'%}" alt="" /></a>
-					</article>
-
-					<!-- Mini Post -->
-					<article class="mini-post">
-						<header>
-							<h3><a href="single.html">Rutrum neque accumsan</a></h3>
-							<time class="published" datetime="2015-10-19">October 19, 2015</time>
-							<a href="#" class="author"><img src="{%static 'blog/images/avatar.jpg'%}" alt="" /></a>
-						</header>
-						<a href="single.html" class="image"><img src="{%static 'blog/images/pic05.jpg'%}" alt="" /></a>
-					</article>
-
-					<!-- Mini Post -->
-					<article class="mini-post">
-						<header>
-							<h3><a href="single.html">Odio congue mattis</a></h3>
-							<time class="published" datetime="2015-10-18">October 18, 2015</time>
-							<a href="#" class="author"><img src="images/avatar.jpg" alt="" /></a>
-						</header>
-						<a href="single.html" class="image"><img src="images/pic06.jpg" alt="" /></a>
-					</article>
-
-					<!-- Mini Post -->
-					<article class="mini-post">
-						<header>
-							<h3><a href="single.html">Enim nisl veroeros</a></h3>
-							<time class="published" datetime="2015-10-17">October 17, 2015</time>
-							<a href="#" class="author"><img src="images/avatar.jpg" alt="" /></a>
-						</header>
-						<a href="single.html" class="image"><img src="images/pic07.jpg" alt="" /></a>
-					</article>
-
-				</div>
-			</section>
-
-			<!-- Posts List -->
-			<section>
-				<ul class="posts">
-					<li>
-						<article>
-							<header>
-								<h3><a href="single.html">Lorem ipsum fermentum ut nisl vitae</a></h3>
-								<time class="published" datetime="2015-10-20">October 20, 2015</time>
-							</header>
-							<a href="single.html" class="image"><img src="images/pic08.jpg" alt="" /></a>
-						</article>
-					</li>
-					<li>
-						<article>
-							<header>
-								<h3><a href="single.html">Convallis maximus nisl mattis nunc id lorem</a></h3>
-								<time class="published" datetime="2015-10-15">October 15, 2015</time>
-							</header>
-							<a href="single.html" class="image"><img src="images/pic09.jpg" alt="" /></a>
-						</article>
-					</li>
-					<li>
-						<article>
-							<header>
-								<h3><a href="single.html">Euismod amet placerat vivamus porttitor</a></h3>
-								<time class="published" datetime="2015-10-10">October 10, 2015</time>
-							</header>
-							<a href="single.html" class="image"><img src="images/pic10.jpg" alt="" /></a>
-						</article>
-					</li>
-					<li>
-						<article>
-							<header>
-								<h3><a href="single.html">Magna enim accumsan tortor cursus ultricies</a></h3>
-								<time class="published" datetime="2015-10-08">October 8, 2015</time>
-							</header>
-							<a href="single.html" class="image"><img src="images/pic11.jpg" alt="" /></a>
-						</article>
-					</li>
+		<!-- Signup Form -->
+		    <form method="post" action="{% url 'take_picture' %}" style="text-align: center;">
+				{% csrf_token %}
+				<!--<input type="email" name="email" id="email" placeholder="Email Address" />-->
+				<input type="submit" value="스캔" />
+			</form>
+		<!-- Footer -->
+			<footer id="footer">
+				<ul class="icons">
+					<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+					<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+					<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+					<li><a href="#" class="icon fa-envelope"><span class="label">Email</span></a></li>
 				</ul>
-			</section>
-			{% endblock %}
+				<ul class="copyright">
+					<li>&copy; Untitled.</li><li>Credits: <a href="http://html5up.net">HTML5 UP</a></li>
+				</ul>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="{% static "blog/assets/js/main.js" %}"></script>
+
+	</body>
+</html>
