@@ -11,6 +11,74 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="{% static "blog/assets/css/main.css" %}" />
+		<style>
+			/* 페이지 전체를 높이와 수직 가운데 정렬하는 스타일 */
+			html, body {
+				height: 100%;
+				margin: 0;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+			}
+		
+			/* 커스텀 디자인을 적용하기 위한 스타일 */
+			.custom-file-input {
+				display: none; /* 기본 파일 업로드 버튼을 숨김 */
+			}
+		
+			.custom-file-label {
+				background-color: #ff00ff;
+				color: #fff;
+				padding: 10px 20px;
+				border-radius: 5px;
+				cursor: pointer;
+				width: 150px; /* 버튼의 너비를 조절하세요 */
+			}
+		
+			.button-container {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				margin-top: 10px;
+			}
+		
+			.button-container button {
+				margin: 0 10px; /* 버튼 사이의 간격을 조절하세요 */
+				padding: 10px 20px;
+				border: none;
+				border-radius: 5px;
+				cursor: pointer;
+			}
+		
+			.button-container #retake-button {
+				background-color: #00ff00; /* 다시 촬영 버튼 색상 */
+				color: black;
+			}
+		
+			.button-container #upload-button {
+				background-color: #ff0000; /* 업로드 버튼 색상 */
+				color: black;
+			}
+
+			.fancy-button {
+				background-color: #ff00ff;
+				color: #fff;
+				padding: 10px 20px;
+				border: none;
+				border-radius: 5px;
+				cursor: pointer;
+				font-size: 16px;
+				transition: background-color 0.3s ease, color 0.3s ease;
+			}
+
+			.fancy-button:hover {
+				background-color: #ff3399; /* 마우스 호버 시 색상 변경 */
+			}
+		</style>
+	</head>
+	</html>
+
 	</head>
 	<body class="is-preload">
 
@@ -20,12 +88,22 @@
 				<p>하세요 <!--<a href="http://html5up.net">링크</a>.--></p>
 			</header>
 
-		<!-- Signup Form -->
-		    <form method="post" action="{% url 'take_picture' %}" style="text-align: center;">
-				{% csrf_token %}
-				<!--<input type="email" name="email" id="email" placeholder="Email Address" />-->
-				<input type="submit" value="스캔" />
-			</form>
+        <!-- Signup Form -->
+		<form method="post" action="{% url 'take_picture' %}" enctype="multipart/form-data" style="text-align: center;">
+			{% csrf_token %}
+			<label for="camera-input" class="custom-file-label">사진 촬영</label>
+			<input type="file" accept="image/*" capture="camera" class="custom-file-input" id="camera-input" name="camera-input" onchange="previewImage(this)">
+			
+			<!-- 업로드 및 다시 촬영 버튼 -->
+			<div class="button-container">
+				<button type="button" id="retake-button" class="fancy-button" style="display: none;">다시 촬영</button>
+				<button type="submit" id="upload-button" class="fancy-button" style="display: none;">업로드</button>
+			</div>
+		</form>
+
+
+		
+			<img id="preview-image" src="" style="max-width: 20%; " display: none;">
 		<!-- Footer -->
 			<footer id="footer">
 				<ul class="icons">
@@ -43,4 +121,40 @@
 			<script src="{% static "blog/assets/js/main.js" %}"></script>
 
 	</body>
+	<script>
+		function previewImage(input) {
+			var preview = document.getElementById('preview-image');
+			var retakeButton = document.getElementById('retake-button');
+			var uploadButton = document.getElementById('upload-button');
+			var uploadLabel = document.querySelector('label[for="camera-input"]');
+
+			if (input.files && input.files[0]) {
+				var reader = new FileReader();
+
+				reader.onload = function (e) {
+					preview.src = e.target.result;
+					preview.style.display = 'block';
+					uploadLabel.style.display = 'none';
+					retakeButton.style.display = 'block'; // 이미지가 선택되면 "다시 촬영" 버튼을 표시합니다.
+					uploadButton.style.display = 'block'; // 이미지가 선택되면 "업로드" 버튼을 표시합니다.
+				};
+
+				reader.readAsDataURL(input.files[0]);
+			}
+		}
+
+		// "다시 촬영" 버튼을 클릭했을 때 input 필드를 리셋합니다.
+		document.getElementById('retake-button').addEventListener('click', function () {
+			var input = document.getElementById('camera-input');
+			input.value = ''; // input 필드 초기화
+			var preview = document.getElementById('preview-image');
+			preview.style.display = 'none'; // 이미지 미리 보기 숨기기
+			var uploadLabel = document.querySelector('label[for="camera-input"]');
+			var retakeButton = document.getElementById('retake-button');
+			var uploadButton = document.getElementById('upload-button');
+			uploadLabel.style.display = 'block';
+			retakeButton.style.display = 'none'; // "다시 촬영" 버튼 숨기기
+			uploadButton.style.display = 'none'; // "업로드" 버튼 숨기기
+		});
+	</script>
 </html>

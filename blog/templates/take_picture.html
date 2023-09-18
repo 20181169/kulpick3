@@ -1,1 +1,16 @@
-<input type="file" accept="image/*" capture="camera"> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>사진 확인</title>
+</head>
+<body>
+    <h1>방금 촬영한 사진</h1>
+    {% if uploaded_file %}
+        <img src="{{ uploaded_file.url }}" alt="방금 촬영한 사진">
+    {% else %}
+        <p>사진이 업로드되지 않았습니다.</p>
+    {% endif %}
+    <a href="{% url 'homepage_views' %}">다시 촬영하기</a>
+</body>
+</html>

@@ -6,8 +6,14 @@ from django.core.paginator import Paginator
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.contrib import messages
-
-
+from django.shortcuts import render
+from django.conf import settings
+from django.core.files.storage import default_storage
+import os
+import requests
+import json
+from django.http import JsonResponse
+import codecs
 def get_author(user):
     qs = Author.objects.filter(user=user)
     if qs.exists():
@@ -65,17 +71,42 @@ def category_views(request, slug):
     return render(request, 'category.html',context)
 
 #사진 촬영
-def take_picture(request):
-    print('take_picture')
-    if request.method == 'POST':
-        # POST 요청을 처리하는 로직을 여기에 추가
-        # 폼 데이터는 request.POST에서 가져올 수 있음
 
-        # 예: 폼 데이터를 처리하고 결과를 context에 담아 템플릿에 전달
-        context = {
-            'result': '스캔이 완료되었습니다.'  # 적절한 결과 메시지
-        }
-        return render(request, 'take_picture.html', context)
+def take_picture(request):
+    if request.method == 'POST':
+        # request.FILES를 사용하여 업로드된 이미지에 접근합니다.
+        uploaded_image = request.FILES.get('camera-input')
+        if uploaded_image:
+            print('uploaded')
+            url = 'http://43.201.215.208:8000/hongbo/upload_img/'
+            print(uploaded_image)
+            files = {'image': uploaded_image}
+            response = requests.post(url, files={'image': ('uploaded_image.jpg', uploaded_image)})
+            #print(response.text)  # response에서 텍스트 데이터를 확인
+            data_list = json.loads(response.text)
+            # 이스케이프된 유니코드 디코딩
+            decoded_response = codecs.decode(response.text, 'unicode_escape')
+
+            # JSON 문자열로 변환
+            json_data = json.dumps(decoded_response, ensure_ascii=False)
+
+            # 디코딩된 JSON 문자열을 파싱하여 딕셔너리로 변환
+            parsed_data = json.loads(json_data)
+            print(parsed_data)
+            print('=================')
+            print(json_data)
+            print(parsed_data)
+            print(data_list)
+            print('=================')
+            # context 변수 선언 및 할당
+            context = data_list
+            print(type(parsed_data))
+            print(type(json_data))
+            print(type(decoded_response))
+            print(type(data_list))
+            return render(request, 'api_result.html', context)
+        else:
+            return JsonResponse({'error': 'Image not found in the request'}, status=400)
+
     else:
-        # GET 요청 처리
-        return render(request, 'take_picture.html')
+        return JsonResponse({'error': 'Invalid request method'}, status=400)
