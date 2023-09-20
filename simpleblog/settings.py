@@ -47,10 +47,12 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'blog',
-
-    
 ]
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # 데이터베이스를 기반으로 세션 관리
+SESSION_COOKIE_NAME = 'kulpick'  # 세션 쿠키의 이름 설정 (선택 사항)
+SESSION_COOKIE_AGE = 60
+SESSION_SAVE_EVERY_REQUEST = True
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -59,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
 ]
 
 ROOT_URLCONF = 'simpleblog.urls'

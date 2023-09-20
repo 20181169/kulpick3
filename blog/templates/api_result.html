@@ -75,6 +75,33 @@
 			.fancy-button:hover {
 				background-color: #ff3399; /* 마우스 호버 시 색상 변경 */
 			}
+
+			.scrollable-container {
+            max-height: 500px; /* 스크롤 가능한 컨테이너의 최대 높이 설정 */
+            overflow-y: auto; /* 세로 스크롤 바 표시 */
+            border: 1px solid #ccc; /* 테두리 추가 (선택사항) */
+            padding: 10px; /* 여백 추가 (선택사항) */
+			width: 500px;
+        	}
+			.select-pair {
+				display: flex;
+				align-items: center;
+				margin-bottom: 20px;
+			}
+
+			.select-pair select {
+				font-size: 12px;
+				padding: 5px;
+				margin-right: 10px;
+			}
+			.input-field {
+				width: 150px; /* 원하는 너비로 설정 */
+				padding: 10px; /* 원하는 패딩값으로 설정 */
+				font-size: 16px; /* 원하는 글꼴 크기로 설정 */
+				border-radius: 5px; /* 원하는 테두리 반경으로 설정 */
+				border: 1px solid #ccc; /* 테두리 스타일 설정 (선택사항) */
+				/* 추가적인 스타일링을 필요에 따라 적용하세요 */
+			}
 		</style>
 	</head>
 	</html>
@@ -83,23 +110,34 @@
 	<body class="is-preload">
 
 		<!-- Header -->
-			<header id="header" style="text-align: center;">
-				<h1>메뉴판 등록</h1>
-				<p>하세요 <!--<a href="http://html5up.net">링크</a>.--></p>
-                {% for item in menu %}
-                    <label for="product-{{ forloop.counter }}">제품 이름: {{ item.productName }}</label>
-                    <select id="product-{{ forloop.counter }}" name="product_{{ forloop.counter }}">
-                        {% for option_item in menu %}
-                            <option value="{{ option_item.price }}" {% if forloop.counter == forloop.parentloop.counter %}selected{% endif %}>
-                                {{ option_item.price }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                    <br>
-                {% endfor %}
-                      
-                </ul>
-			</header>
+		<header id="header" style="text-align: center;">
+			<form method="post" action="{% url 'upload_product' %}">
+				{% csrf_token %}  
+				<div class="scrollable-container">
+					{% for item in menu %}
+						<div class="select-pair">
+							<input type="text" id="product-{{ forloop.counter }}" name="product_{{ forloop.counter }}"
+								value="{{ item.productName }}"
+								{% if forloop.counter == forloop.parentloop.counter %}selected{% endif %}
+								class="input-field"> <!-- input 요소에 클래스 추가 -->
+
+							<select id="product-price-{{ forloop.counter }}" name="product_price_{{ forloop.counter }}"
+									class="input-field"> <!-- select 요소에 클래스 추가 -->
+								<option value="{{ item.price }}" {% if forloop.counter == forloop.parentloop.counter %}selected{% endif %}>
+									{{ item.price }}
+								</option>
+								{% for option_item in menu %}
+									<option value="{{ option_item.price }}">
+										{{ option_item.price }}
+									</option>
+								{% endfor %}
+							</select>
+						</div>
+					{% endfor %}
+				</div>
+				<button type="submit" class="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" style="padding: 30px 60px; display: flex; align-items: center; position: fixed; left: 47%; ">제출하기</button>
+			</form>
+		</header>
 
         <!-- Signup Form -->
 		<form method="post" action="{% url 'take_picture' %}" enctype="multipart/form-data" style="text-align: center;">

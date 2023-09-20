@@ -1,0 +1,402 @@
+<!DOCTYPE HTML>
+<!--
+	Eventually by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+{% load static %}
+<head>
+    <title>Eventually by HTML5 UP</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="{% static "blog/assets/css/main.css" %}" />
+    <style>
+		#link {color: #E45635;display:block;font: 12px "Helvetica Neue", Helvetica, Arial, sans-serif;text-align:center; text-decoration: none;}
+#link:hover {color: #CCCCCC}
+
+#link, #link:hover {-webkit-transition: color 0.5s ease-out;-moz-transition: color 0.5s ease-out;-ms-transition: color 0.5s ease-out;-o-transition: color 0.5s ease-out;transition: color 0.5s ease-out;}
+
+/** BEGIN CSS **/
+        body {background: #333333;}
+        @keyframes rotate-loading {
+            0%  {transform: rotate(0deg);-ms-transform: rotate(0deg); -webkit-transform: rotate(0deg); -o-transform: rotate(0deg); -moz-transform: rotate(0deg);}
+            100% {transform: rotate(360deg);-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); -o-transform: rotate(360deg); -moz-transform: rotate(360deg);}
+        }
+
+        @-moz-keyframes rotate-loading {
+            0%  {transform: rotate(0deg);-ms-transform: rotate(0deg); -webkit-transform: rotate(0deg); -o-transform: rotate(0deg); -moz-transform: rotate(0deg);}
+            100% {transform: rotate(360deg);-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); -o-transform: rotate(360deg); -moz-transform: rotate(360deg);}
+        }
+
+        @-webkit-keyframes rotate-loading {
+            0%  {transform: rotate(0deg);-ms-transform: rotate(0deg); -webkit-transform: rotate(0deg); -o-transform: rotate(0deg); -moz-transform: rotate(0deg);}
+            100% {transform: rotate(360deg);-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); -o-transform: rotate(360deg); -moz-transform: rotate(360deg);}
+        }
+
+        @-o-keyframes rotate-loading {
+            0%  {transform: rotate(0deg);-ms-transform: rotate(0deg); -webkit-transform: rotate(0deg); -o-transform: rotate(0deg); -moz-transform: rotate(0deg);}
+            100% {transform: rotate(360deg);-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); -o-transform: rotate(360deg); -moz-transform: rotate(360deg);}
+        }
+
+        @keyframes rotate-loading {
+            0%  {transform: rotate(0deg);-ms-transform: rotate(0deg); -webkit-transform: rotate(0deg); -o-transform: rotate(0deg); -moz-transform: rotate(0deg);}
+            100% {transform: rotate(360deg);-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); -o-transform: rotate(360deg); -moz-transform: rotate(360deg);}
+        }
+
+        @-moz-keyframes rotate-loading {
+            0%  {transform: rotate(0deg);-ms-transform: rotate(0deg); -webkit-transform: rotate(0deg); -o-transform: rotate(0deg); -moz-transform: rotate(0deg);}
+            100% {transform: rotate(360deg);-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); -o-transform: rotate(360deg); -moz-transform: rotate(360deg);}
+        }
+
+        @-webkit-keyframes rotate-loading {
+            0%  {transform: rotate(0deg);-ms-transform: rotate(0deg); -webkit-transform: rotate(0deg); -o-transform: rotate(0deg); -moz-transform: rotate(0deg);}
+            100% {transform: rotate(360deg);-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); -o-transform: rotate(360deg); -moz-transform: rotate(360deg);}
+        }
+
+        @-o-keyframes rotate-loading {
+            0%  {transform: rotate(0deg);-ms-transform: rotate(0deg); -webkit-transform: rotate(0deg); -o-transform: rotate(0deg); -moz-transform: rotate(0deg);}
+            100% {transform: rotate(360deg);-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); -o-transform: rotate(360deg); -moz-transform: rotate(360deg);}
+        }
+
+        @keyframes loading-text-opacity {
+            0%  {opacity: 0}
+            20% {opacity: 0}
+            50% {opacity: 1}
+            100%{opacity: 0}
+        }
+
+        @-moz-keyframes loading-text-opacity {
+            0%  {opacity: 0}
+            20% {opacity: 0}
+            50% {opacity: 1}
+            100%{opacity: 0}
+        }
+
+        @-webkit-keyframes loading-text-opacity {
+            0%  {opacity: 0}
+            20% {opacity: 0}
+            50% {opacity: 1}
+            100%{opacity: 0}
+        }
+
+        @-o-keyframes loading-text-opacity {
+            0%  {opacity: 0}
+            20% {opacity: 0}
+            50% {opacity: 1}
+            100%{opacity: 0}
+        }
+        .loading-container,
+        .loading {
+            height: 100px;
+            position: relative;
+            width: 100px;
+            border-radius: 100%;
+        }
+
+
+        .loading-container { margin: 40px auto }
+
+        .loading {
+            border: 2px solid transparent;
+            border-color: transparent #fff transparent #FFF;
+            -moz-animation: rotate-loading 1.5s linear 0s infinite normal;
+            -moz-transform-origin: 50% 50%;
+            -o-animation: rotate-loading 1.5s linear 0s infinite normal;
+            -o-transform-origin: 50% 50%;
+            -webkit-animation: rotate-loading 1.5s linear 0s infinite normal;
+            -webkit-transform-origin: 50% 50%;
+            animation: rotate-loading 1.5s linear 0s infinite normal;
+            transform-origin: 50% 50%;
+        }
+
+        .loading-container:hover .loading {
+            border-color: transparent #E45635 transparent #E45635;
+        }
+        .loading-container:hover .loading,
+        .loading-container .loading {
+            -webkit-transition: all 0.5s ease-in-out;
+            -moz-transition: all 0.5s ease-in-out;
+            -ms-transition: all 0.5s ease-in-out;
+            -o-transition: all 0.5s ease-in-out;
+            transition: all 0.5s ease-in-out;
+        }
+
+        #loading-text {
+            -moz-animation: loading-text-opacity 2s linear 0s infinite normal;
+            -o-animation: loading-text-opacity 2s linear 0s infinite normal;
+            -webkit-animation: loading-text-opacity 2s linear 0s infinite normal;
+            animation: loading-text-opacity 2s linear 0s infinite normal;
+            color: #ffffff;
+            font-family: "Helvetica Neue, "Helvetica", ""arial";
+            font-size: 10px;
+            font-weight: bold;
+            margin-top: 45px;
+            opacity: 0;
+            position: absolute;
+            text-align: center;
+            text-transform: uppercase;
+            top: 0;
+            width: 100px;
+        }
+        /* 페이지 전체를 높이와 수직 가운데 정렬하는 스타일 */
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 커스텀 디자인을 적용하기 위한 스타일 */
+        .custom-file-input {
+            display: none; /* 기본 파일 업로드 버튼을 숨김 */
+        }
+
+        .custom-file-label {
+            background-color: #ff00ff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 150px; /* 버튼의 너비를 조절하세요 */
+        }
+
+		.button-container {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin-top: 10px;
+			text-align: center; /* 텍스트를 수평 중앙에 정렬 */
+		}
+
+		.button-container button {
+			margin: 0 10px; /* 버튼 사이의 간격을 조절하세요 */
+			padding: 10px 20px;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			font-size: 16px; /* 버튼 텍스트 크기 설정 */
+		}
+
+		.button-container #retake-button {
+			background-color: #615b5b; /* 다시 촬영 버튼 색상 */
+			color: white; /* 텍스트 색상 설정 */
+		}
+
+		.button-container #upload-button {
+			background-color: #242727; /* 업로드 버튼 색상 */
+			color: white; /* 텍스트 색상 설정 */
+		}
+        
+        .fancy-button {
+            background-color: #ff00ff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .fancy-button:hover {
+            background-color: #ff3399; /* 마우스 호버 시 색상 변경 */
+        }
+
+
+
+    </style>
+</head>
+
+<body class="is-preload">
+    
+    <!-- Header -->
+    <header id="header" style="text-align: center;">
+        <h1>메뉴판 등록</h1>
+        <p>하세요 <!--<a href="http://html5up.net">링크</a>.--></p>
+    </header>
+
+    <!-- Signup Form -->
+    <form method="post" action="{% url 'take_picture' %}" enctype="multipart/form-data" style="text-align: center;">
+        {% csrf_token %}
+        <label for="camera-input" class="custom-file-label" style="display: none;">사진 촬영</label>
+        <input type="file" accept="image/*" capture="camera" class="custom-file-input" id="camera-input" name="camera-input" onchange="previewImage(this)">
+        <!-- Loading Bar -->
+
+        <!-- 업로드 및 다시 촬영 버튼 -->
+        <div class="button-container">
+            <button type="button" id="retake-button" class="fancy-button" style="display: none;">다시 촬영</button>
+            <button type="submit" id="upload-button" class="fancy-button" style="display: none;">업로드</button>
+        </div>
+    </form>
+    <button type="button" id="login-button" class="fancy-button">로그인</button>
+
+    <form class="register-form" style="display: none;">
+        <!-- 회원가입 폼 입력 필드 및 버튼을 여기에 추가 -->
+        <!-- 예: 이름, 이메일, 패스워드, 회원가입 버튼 -->
+        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+        <input type="text" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Your Name">
+    
+        <!-- 이메일, 패스워드, 회원가입 버튼 등의 입력 필드 추가 -->
+    
+        <button type="button" id="register-button" class="fancy-button">회원가입</button>
+    </form>
+
+    <form class="login-form" method="POST" action="{% url 'login' %}">
+        {% csrf_token %}
+        <div class="grid gap-6 mb-6 md:grid-cols-2">
+            <div>
+                <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone number</label>
+                <input type="text" name="phone" id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="12345678" >
+            </div>
+        </div>
+        <div class="mb-6">
+            <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+            <input type="password" name="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required>
+        </div>
+        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg">
+            Log In
+        </button>
+    </form>
+    
+	<form method="post" action="{% url 'take_picture' %}" enctype="multipart/form-data" style="text-align: center;">
+        {% csrf_token %}
+        
+    </form>
+
+    <img id="preview-image" src="" style="max-width: 25%; display: none;">
+	<div class="loading-container" style = "display: none;">
+		<div class="loading"></div>
+		<div id="loading-text">loading</div>
+	</div>
+    <!-- Footer -->
+    <footer id="footer">
+        <ul class="icons">
+            <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+            <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+            <li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+            <li><a href="#" class="icon fa-envelope"><span class="label">Email</span></a></li>
+        </ul>
+        <ul class="copyright">
+            <li>&copy; Untitled.</li><li>Credits: <a href="http://html5up.net">HTML5 UP</a></li>
+        </ul>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="{% static "blog/assets/js/main.js" %}"></script>
+
+    <!-- JavaScript 코드 추가 -->
+	<script>
+		function showLoadingBar() {
+			var loadingContainer = document.querySelector('.loading-container');
+
+			// 로딩 바를 나타내기 위해 display 속성을 'block'으로 변경
+			loadingContainer.style.display = 'block';
+		}
+		function previewImage(input) {
+			var preview = document.getElementById('preview-image');
+			var retakeButton = document.getElementById('retake-button');
+			var uploadButton = document.getElementById('upload-button');
+			var uploadLabel = document.querySelector('label[for="camera-input"]');
+	
+			if (input.files && input.files[0]) {
+				var reader = new FileReader();
+	
+				reader.onload = function (e) {
+					preview.src = e.target.result;
+					preview.style.display = 'block';
+					uploadLabel.style.display = 'none';
+					retakeButton.style.display = 'block'; // 이미지가 선택되면 "다시 촬영" 버튼을 표시합니다.
+					uploadButton.style.display = 'block'; // 이미지가 선택되면 "업로드" 버튼을 표시합니다.
+	
+					// "업로드" 버튼 클릭했을 때 처리
+					document.getElementById('upload-button').addEventListener('click', function () {
+						console.log('showLoadingBar')
+						showLoadingBar(); // 업로드 버튼 클릭 시 로딩 바를 표시합니다.
+	
+						// 이후에 업로드 로직을 처리할 수 있도록 구현합니다.
+						// 예: 이미지 업로드 API 호출 등
+					});
+				};
+	
+				reader.readAsDataURL(input.files[0]);
+			}
+		}
+	
+		// "다시 촬영" 버튼을 클릭했을 때 input 필드를 리셋합니다.
+        document.addEventListener('DOMContentLoaded', function () {
+        var loginForm = document.querySelector('.login-form');
+        var loginButton = document.getElementById('login-button');
+        var takePictureButton = document.getElementById('take-picture-button'); // 사진 촬영 버튼
+
+        // 페이지 로드 시에는 로그인 폼만 보이도록 설정
+        loginForm.style.display = 'none';
+        takePictureButton.style.display = 'none'; // 사진 촬영 버튼도 숨깁니다.
+
+        // 로그인 버튼을 클릭할 때 로그인 폼을 표시하고 버튼 숨기기
+        loginButton.addEventListener('click', function () {
+            loginForm.style.display = 'block';
+            loginButton.style.display = 'none';
+        });
+
+        // 로그인 폼을 제출할 때 로그인이 성공했는지 여부를 확인하고 사진 촬영 버튼을 표시합니다.
+        loginForm.addEventListener('submit', function (event) {
+            event.preventDefault(); // 기본 폼 제출 동작을 막습니다. 페이지 이동을 방지합니다.
+            var access_token = "{{ request.session.access_token }}";
+            // 여기에 로그인 처리 코드를 추가합니다.
+            console.log(access_token)
+            // 예: 사용자가 로그인에 성공하면 아래의 코드를 실행합니다.
+            if (access_token !== null && access_token !== undefined) {
+                var loginSuccess = true; // access_token이 존재하면 로그인 성공으로 가정
+            } else {
+                var loginSuccess = false; // access_token이 없으면 로그인 실패로 가정
+            }
+
+            if (loginSuccess) {
+                takePictureButton.style.display = 'block'; // 로그인 성공 후에 사진 촬영 버튼 표시
+            }
+        });
+    });
+
+		document.getElementById('retake-button').addEventListener('click', function () {
+			var input = document.getElementById('camera-input');
+			input.value = ''; // input 필드 초기화
+			var preview = document.getElementById('preview-image');
+			preview.style.display = 'none'; // 이미지 미리 보기 숨기기
+			var uploadLabel = document.querySelector('label[for="camera-input"]');
+			var retakeButton = document.getElementById('retake-button');
+			var uploadButton = document.getElementById('upload-button');
+			uploadLabel.style.display = 'block';
+			retakeButton.style.display = 'none'; // "다시 촬영" 버튼 숨기기
+			uploadButton.style.display = 'none'; // "업로드" 버튼 숨기기
+		});
+        document.getElementById('login-button').addEventListener('click', function () {
+        var loginForm = document.querySelector('.login-form');
+
+        // 로그인 폼의 현재 표시 상태를 가져옵니다.
+        var isLoginFormVisible = window.getComputedStyle(loginForm).display === 'block';
+
+        // 로그인 폼의 표시 상태를 변경합니다.
+        if (isLoginFormVisible) {
+            loginForm.style.display = 'none'; // 로그인 폼이 이미 보이는 경우, 숨깁니다.
+        } else {
+            loginForm.style.display = 'block'; // 로그인 폼이 숨겨져 있는 경우, 표시합니다.
+        }
+        });
+
+        // 회원가입 버튼을 클릭하면 로그인 폼을 보여주는 함수
+        document.getElementById('register-button').addEventListener('click', function () {
+            var loginForm = document.querySelector('.login-form');
+            var registerForm = document.querySelector('.register-form');
+
+            // 회원가입 폼을 숨깁니다.
+            registerForm.style.display = 'none';
+
+            // 로그인 폼을 표시합니다.
+            loginForm.style.display = 'block';
+        });
+	</script>
+</body>
+</html>
