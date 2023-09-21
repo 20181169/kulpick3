@@ -222,6 +222,9 @@
             list-style: none;
             padding: 0;
         }
+        .product-info span {
+            font-size: 14px; /* 원하는 글자 크기로 설정 */
+        }
 
 
     </style>
@@ -232,15 +235,13 @@
     <header id="header" style="text-align: center;">
         <h1>업로드 완료!</h1>
         <p>
-            <h1>Product List</h1>
-    
             <div class="scrollable-container">
                 <ul>
                     {% for product in result.data.productList %}
                         <li>
                             <div class="product-info">
-                                {{ product.productName }}
-                                : {{ product.price }}원
+                                <span>{{ product.productName }}</span>
+                                : <span>{{ product.price }}원</span>
                             </div>
                         </li>
                     {% endfor %}

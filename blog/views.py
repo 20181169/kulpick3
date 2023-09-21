@@ -216,9 +216,6 @@ def upload_product(request):
         # 필요한 작업을 수행하고 응답을 반환
         for item in product_list:
             product_name, product_price = item
-            print(item)
-            print(type(product_name))
-            print(type(normalize_price(product_price)))
             a = normalize_price(product_price)
             data = {
                 "storeNo": store_no_session,
@@ -226,20 +223,16 @@ def upload_product(request):
                 "price": a,
                 "photoImgPaths": []
             }
-            print(product_name)
-            print(data)
             url2 = 'https://api.kulpick.com/api/v1/product/list'
             data2 = {
                 "storeNo": store_no_session,
                 "pageCnt":'0'
             }
+            response = requests.post(url,headers=headers, json = data)
             response2 = requests.get(url2,headers=headers, params = data2)
-            #print('res2')
-            #print(response2.text)
             data_list = json.loads(response2.text)
             context = data_list
-            #response = requests.post(url,headers=headers, json = data)
-            #print(response.text)
+
         print(context)
         return render(request, 'upload_done.html',context)
     else:
