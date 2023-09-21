@@ -14,6 +14,7 @@ import requests
 import json
 from django.http import JsonResponse
 import codecs
+import re
 def get_author(user):
     qs = Author.objects.filter(user=user)
     if qs.exists():
@@ -152,18 +153,16 @@ def take_picture(request):
 
             # 디코딩된 JSON 문자열을 파싱하여 딕셔너리로 변환
             parsed_data = json.loads(json_data)
-            print(parsed_data)
-            print('=================')
-            print(json_data)
-            print(parsed_data)
-            print(data_list)
-            print('=================')
             # context 변수 선언 및 할당
             context = data_list
-            print(type(parsed_data))
-            print(type(json_data))
-            print(type(decoded_response))
-            print(type(data_list))
+            for item in context['menu']:
+                price = re.sub(r'[^\d]', '', item['price'])
+                if len(price) == 2:  # 두 자릿수 숫자인 경우
+                    price = int(price) * 100
+                elif len(price) == 3 and price[-1] == '0':  # 세 자릿수이면서 일의 자리가 0인 경우
+                    price = int(price) * 100
+                item['price'] = price
+
             return render(request, 'api_result.html', context)
         else:
             return JsonResponse({'error': 'Image not found in the request'}, status=400)
@@ -212,6 +211,7 @@ def upload_product(request):
         headers = {
             'Authorization': f'Bearer {access_token}'  # Bearer 스킴을 사용한 토큰 포함
         }
+        print
         # 이제 product_list에는 음식명과 가격이 번갈아가면서 저장됩니다.
         # 필요한 작업을 수행하고 응답을 반환
         for item in product_list:
@@ -226,10 +226,22 @@ def upload_product(request):
                 "price": a,
                 "photoImgPaths": []
             }
+            print(product_name)
             print(data)
+            url2 = 'https://api.kulpick.com/api/v1/product/list'
+            data2 = {
+                "storeNo": store_no_session,
+                "pageCnt":'0'
+            }
+            response2 = requests.get(url2,headers=headers, params = data2)
+            #print('res2')
+            #print(response2.text)
+            data_list = json.loads(response2.text)
+            context = data_list
             #response = requests.post(url,headers=headers, json = data)
             #print(response.text)
-        return render(request, 'upload_done.html')
+        print(context)
+        return render(request, 'upload_done.html',context)
     else:
         # POST 요청이 아닌 경우 다른 작업을 수행하거나 적절한 응답을 반환할 수 있습니다.
         return HttpResponse('POST 요청이 아닙니다.')
@@ -283,7 +295,12 @@ def select_store(request):
     print(response.text)
     response_data = json.loads(response.text)
     store_list = response_data["result"]["data"]["storeList"]
+    print(store_list)
+    print('store_list')
     store_no_list = [store["storeNo"] for store in response_data["result"]["data"]["storeList"]]
+    store_name_list = [store["storeName"] for store in response_data["result"]["data"]["storeList"]]
+    request.session['store_no_list'] = store_no_list
+    request.session['store_name_list'] = store_name_list
     for store_no in store_no_list:
         print("storeNo:", store_no)
     data_list = json.loads(response.text)
