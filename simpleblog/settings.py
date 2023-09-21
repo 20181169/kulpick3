@@ -25,7 +25,7 @@ SECRET_KEY = 'q+db$a3)d7$03ta**-!m@$27y@kmn9hrkydz7q%lt*-5atfdv^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 CKEDITOR_CONFIGS = {
     'default': {
@@ -51,7 +51,7 @@ INSTALLED_APPS = [
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # 데이터베이스를 기반으로 세션 관리
 SESSION_COOKIE_NAME = 'kulpick'  # 세션 쿠키의 이름 설정 (선택 사항)
-SESSION_COOKIE_AGE = 60
+SESSION_COOKIE_AGE = 3600
 SESSION_SAVE_EVERY_REQUEST = True
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

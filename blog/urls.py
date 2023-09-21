@@ -11,4 +11,6 @@ urlpatterns = [
     path('upload_product', views.upload_product, name='upload_product'),
     path('login', views.login, name='login'),
     path('wrong_login', views.wrong_login, name='wrong_login'),
+    path('select_store', views.select_store, name='select_store'),
+    #path('upload_done', views.upload_done, name='upload_done'),
 ]

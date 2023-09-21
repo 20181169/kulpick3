@@ -66,18 +66,32 @@ def wrong_login(request):
             return redirect(wrong_login)
 
 def homepage_views_afterLogin(request):
-    post_list = Post.objects.all().order_by('-published')
-    paginator = Paginator(post_list, 2) # Show x post per page.
-    post_number = request.GET.get('page')
-    post = paginator.get_page(post_number)
-    category = Category.objects.all()
-    access_token = request.session.get('access_token')
-    print(access_token)
-    context = {
-        'post': post,  
-        'category': category
-    }
-    return render(request, 'index.html', context)
+    if request.method == 'POST':
+        post_list = Post.objects.all().order_by('-published')
+        paginator = Paginator(post_list, 2) # Show x post per page.
+        post_number = request.GET.get('page')
+        post = paginator.get_page(post_number)
+        category = Category.objects.all()
+        access_token = request.session.get('access_token')
+        store_no = request.POST.get('store_no')
+        store_name = request.POST.get('store_name')
+        request.session['store_no'] = request.POST.get('store_no')
+        request.session['store_name'] = request.POST.get('store_name')
+        store_no_session = request.session.get('store_no')
+        store_name_session = request.session.get('store_name')
+        context = {
+            'store_no': store_no_session,  
+            'store_name': store_name_session,
+        }
+        return render(request, 'index.html', context)
+    else:
+        store_no_session = request.session.get('store_no')
+        store_name_session = request.session.get('store_name')
+        context = {
+            'store_no': store_no_session,  
+            'store_name': store_name_session,
+        }
+        return render(request, 'index.html', context)
 
 def post_views(request, slug, id):
     post = Post.objects.get(slug=slug, id=id)
@@ -181,6 +195,8 @@ def normalize_price(price_str):
 
 def upload_product(request):
     if request.method == 'POST':
+        store_no_session = request.session.get('store_no')
+        store_name_session = request.session.get('store_name')
         url = 'https://api.kulpick.com/api/v1/product'
         product_list = []  # 음식명과 가격을 번갈아 저장할 리스트
         access_token = request.session.get('access_token')
@@ -205,14 +221,15 @@ def upload_product(request):
             print(type(normalize_price(product_price)))
             a = normalize_price(product_price)
             data = {
-                "storeNo": "210",
+                "storeNo": store_no_session,
                 "productName": product_name,
                 "price": a,
+                "photoImgPaths": []
             }
             print(data)
-            response = requests.post(url,headers=headers)
-            print(response.text)
-        return HttpResponse('제품 업로드가 완료되었습니다.')
+            #response = requests.post(url,headers=headers, json = data)
+            #print(response.text)
+        return render(request, 'upload_done.html')
     else:
         # POST 요청이 아닌 경우 다른 작업을 수행하거나 적절한 응답을 반환할 수 있습니다.
         return HttpResponse('POST 요청이 아닙니다.')
@@ -242,10 +259,36 @@ def login(request):
             response_data = json.loads(response.text)
             access_token = response_data['result']['data']['accessToken']
             request.session['access_token'] = access_token
+            print(access_token)
             # 응답 확인
-            return redirect(homepage_views_afterLogin)
+            return redirect(select_store)
         except KeyError:
             print('KeyError')
             # 'accessToken' 키가 없는 경우 '잘못된 로그인 정보입니다' 팝업을 표시하고 현재 페이지에 머무릅니다.
             return render(request, 'wrong_login.html')
+        
+def select_store(request):
+    url = "https://api.kulpick.com/api/v1/store/list/"  # 실제 엔드포인트 URL로 대체해야 합니다.
+
+    # 요청 헤더 설정
+    access_token = request.session.get('access_token')
+    headers = {
+        'Authorization': f'Bearer {access_token}'  # Bearer 스킴을 사용한 토큰 포함
+    }
+    # 로그인 정보 설정
+    params = {
+        "listType": "3",           # 내 매장 리스트
+    }
+    response = requests.get(url,headers=headers, params = params)
+    print(response.text)
+    response_data = json.loads(response.text)
+    store_list = response_data["result"]["data"]["storeList"]
+    store_no_list = [store["storeNo"] for store in response_data["result"]["data"]["storeList"]]
+    for store_no in store_no_list:
+        print("storeNo:", store_no)
+    data_list = json.loads(response.text)
+    context = data_list
+    return render(request, 'select_store.html', {'store_list': store_list})
+
+
         
