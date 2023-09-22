@@ -12,5 +12,8 @@ urlpatterns = [
     path('login', views.login, name='login'),
     path('wrong_login', views.wrong_login, name='wrong_login'),
     path('select_store', views.select_store, name='select_store'),
+    path('flowbite_test', views.flowbite_test, name='flowbite_test'),
     #path('upload_done', views.upload_done, name='upload_done'),
+    path('ai_recommand', views.ai_recommand, name='ai_recommand'),
+    path('ai_recommand_progress', views.ai_recommand_progress, name='ai_recommand_progress'),
 ]
