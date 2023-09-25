@@ -1,8 +1,24 @@
 @charset "UTF-8";
 
 body {
+  min-height: 100vh;
   color: #333;
   font-size: 16px;
+  overflow-x: hidden;
+  margin: 0;
+}
+body.overlay {
+  overflow: hidden;
+}
+body.overlay::after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  display: block;
+  background-color: rgba(0,0,0,.3);
+  position: absolute;
+  left: 0;
+  top: 64px;
 }
 ul {
   margin: 0;
@@ -27,6 +43,24 @@ select {
   padding: 10px;
   border-radius: 6px;
 }
+table {
+  border-collapse:collapse;
+  width: 100%;
+  margin-bottom: 10px;
+}
+table th {
+  background-color: #444444;
+  color: #fff;
+  padding: 8px 12px;
+  border-bottom: 1px solid #fff;
+}
+table td {
+  border: 1px solid #d7d7d7;
+  padding-left: 10px;
+}
+table td.ai {
+  padding: 10px;
+}
 .top {
   display: flex;
   align-items: center;
@@ -34,6 +68,7 @@ select {
   padding: 0 20px;
   background: #fec700;
   margin-bottom: 20px;
+  position: relative;
 }
 .top_btn {
   background: #fff;
@@ -88,8 +123,28 @@ select {
   -webkit-transform: translateY(-10px) rotate(45deg);
   transform: translateY(-10px) rotate(45deg);
 }
+.gnb_list {
+  height: 100vh;
+  position: fixed;
+  right: -170px;
+  top: 64px;
+  z-index: 99;
+  background-color: #fff;
+  transition: all .3s;
+}
+.gnb_list.on {
+  right: -1px;
+}
+.gnb_list > ul > li {
+  border-bottom: 1px solid #d7d7d7;
+}
+.gnb_list > ul > li > a {
+  padding: 8px 24px;
+  display: block;
+  font-weight: 600;
+}
 .cont {
-  padding-bottom: 60px;
+  padding: 10px 10px 60px;
 }
 .btn {
   display: flex;
@@ -120,12 +175,14 @@ select {
   max-width: 180px;
 }
 .picture_wrap .btn,
-.menu_regist .btn {
+.menu_regist .btn,
+.special_pd .btn {
   justify-content: center;
   padding-top: 10px;
 }
 .picture_wrap .btn > a,
-.menu_regist .btn > a {
+.menu_regist .btn > a,
+.special_pd .btn > a {
   margin: 0;
   width: 90%;
 }
@@ -137,4 +194,12 @@ select {
 }
 .regist_list > ul > li > select {
   width: 49%;
+}
+.ai_btn {
+  text-align: center;
+  background-color: #fec700;
+  display: block;
+  padding: 10px;
+  border-radius: 10px;
+  font-weight: 600;
 }

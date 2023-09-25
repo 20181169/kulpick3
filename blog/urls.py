@@ -19,4 +19,5 @@ urlpatterns = [
     path('menu', views.menu, name="menu"),
     path('picture', views.picture, name="picture"),
     path('menuManage', views.menuManage, name="menuManage"),
+    path('special', views.special, name="special"),
 ]

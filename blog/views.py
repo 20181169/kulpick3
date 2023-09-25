@@ -334,6 +334,10 @@ def picture(request):
 def menuManage(request):
     
     return render(request, 'menuManage.html')
+
+def special(request):
+    
+    return render(request, 'special.html')
 """================== template ============================"""
 
 def ai_recommand(request):
