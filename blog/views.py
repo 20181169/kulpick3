@@ -327,7 +327,7 @@ def ai_recommand(request):
 
 def ai_recommand_progress(request):
     if request.method == 'POST':
-        loaded_model = joblib.load("C:/Users/PC/Desktop/특가상품추천/특가상품추천/recommand_model")
+        loaded_model = joblib.load("C:/Users/PC/Desktop/git_추천/test999.pkl")
         default_input = request.POST.get('default_input')
         product2 = request.POST.get('product')
         weather2 = request.POST.get('weather')

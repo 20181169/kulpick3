@@ -5,7 +5,7 @@ import requests
 from pyproj import Transformer
 
 address = st.text_input("서울특별시 서초구 바우뫼로 175")  # 예시 주소
-api_key = "d46f200eab5046fb4000daf50176699b"
+api_key = "20ea6612c579f15c693d7c1218efa3c3"
 def get_lat_lon_from_address(address, api_key):
     url = f"https://dapi.kakao.com/v2/local/search/address.json?query={address}"
     headers = {"Authorization": f"KakaoAK {api_key}"}
@@ -46,7 +46,7 @@ def find_area_containing_point(shp_path, x, y):
 
 # 주소정보를 x,y 좌표 값으로 변경
 def find_biz_ara_info (address) :
-    api_key = "d46f200eab5046fb4000daf50176699b"  # 여기에 발급받은 카카오 맵 API 키를 넣어주세요.
+    api_key = "20ea6612c579f15c693d7c1218efa3c3"  # 여기에 발급받은 카카오 맵 API 키를 넣어주세요.
     print(api_key)
     lat, lon = get_lat_lon_from_address(address, api_key)
     if lat and lon:
