@@ -321,6 +321,21 @@ import requests
 from pyproj import Transformer
 np.random.seed(0)
 random.seed(0)
+
+"""================== template ============================"""
+def menu(request):
+    
+    return render(request, 'menu.html')
+
+def picture(request):
+    
+    return render(request, 'picture.html')
+
+def menuManage(request):
+    
+    return render(request, 'menuManage.html')
+"""================== template ============================"""
+
 def ai_recommand(request):
     
     return render(request, 'ai_recommand.html')

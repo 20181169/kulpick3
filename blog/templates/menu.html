@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>꿀픽 매장관리</title>
+  <script
+  src="https://code.jquery.com/jquery-3.7.1.min.js"
+  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+  crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="{% static "blog/assets/css/store.css" %}" />
+</head>
+<body>
+  <div class="top">
+    <h1>매장선택</h1>
+    <div class="util">
+      <a href="#" class="top_btn">메뉴등록</a>
+      <a href="#" class="hamburger">  
+        <span></span>
+        <span></span>
+        <span></span>
+      </a>
+    </div>
+  </div>
+  <div class="cont">
+    <div class="menu_list">
+      <ul>
+        <li>
+          <div class="img_box">
+            <img src="{% static "blog/images/bg06.jpg" %}" alt="thumbnail">
+          </div>
+          <div class="info">
+            정보가 들어갑니다.
+            정보가 들어갑니다.
+            정보가 들어갑니다.
+            정보가 들어갑니다.
+          </div>
+        </li>
+        <li>
+          <div class="img_box">
+            <img src="{% static "blog/images/bg06.jpg" %}" alt="thumbnail">
+          </div>
+          <div class="info">
+            정보가 들어갑니다.
+            정보가 들어갑니다.
+            정보가 들어갑니다.
+            정보가 들어갑니다.
+          </div>
+        </li>
+        <li>
+          <div class="img_box">
+            <img src="{% static "blog/images/bg06.jpg" %}" alt="thumbnail">
+          </div>
+          <div class="info">
+            정보가 들어갑니다.
+            정보가 들어갑니다.
+            정보가 들어갑니다.
+            정보가 들어갑니다.
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="btn">
+      <a href="#">메뉴등록</a>
+      <a href="#">일괄등록</a>
+    </div>
+  </div>
+
+  <script>
+    var burger = $('.hamburger');
+
+    burger.each(function(index){
+      var $this = $(this);
+      
+      $this.on('click', function(e){
+        e.preventDefault();
+        $(this).toggleClass('active-' + (index+1));
+      })
+    });
+  </script>
+</body>
+</html>

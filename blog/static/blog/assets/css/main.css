@@ -582,7 +582,7 @@ textarea {
   background-color: transparent;
   border-radius: 6px;
   border: none;
-  border: solid 2px rgba(255, 255, 255, 0.35);
+  border: solid 2px #fff;
   color: inherit;
   display: block;
   outline: 0;
@@ -751,7 +751,7 @@ button,
   input[type="button"]:hover,
   button:hover,
   .button:hover {
-    background-color: #1fcaa7; }
+    background-color: #fec700; }
   input[type="submit"]:active,
   input[type="reset"]:active,
   input[type="button"]:active,

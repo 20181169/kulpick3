@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>꿀픽 매장관리</title>
+  <script
+  src="https://code.jquery.com/jquery-3.7.1.min.js"
+  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+  crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="{% static "blog/assets/css/store.css" %}" />
+</head>
+<body>
+  <div class="top">
+    <h1>메뉴관리</h1>
+    <a href="#" class="hamburger">  
+      <span></span>
+      <span></span>
+      <span></span>
+    </a>
+  </div>
+
+  <div class="cont picture_wrap">
+    <div class="picture">
+      <img src="{% static "blog/images/bg04.jpg" %}" alt="스캔사진">
+    </div>
+    <div class="btn">
+      <a href="#">사진등록</a>
+    </div>
+  </div>
+
+  <script>
+    var burger = $('.hamburger');
+
+    burger.each(function(index){
+      var $this = $(this);
+      
+      $this.on('click', function(e){
+        e.preventDefault();
+        $(this).toggleClass('active-' + (index+1));
+      })
+    });
+  </script>
+</body>
+</html>

@@ -16,4 +16,7 @@ urlpatterns = [
     #path('upload_done', views.upload_done, name='upload_done'),
     path('ai_recommand', views.ai_recommand, name='ai_recommand'),
     path('ai_recommand_progress', views.ai_recommand_progress, name='ai_recommand_progress'),
+    path('menu', views.menu, name="menu"),
+    path('picture', views.picture, name="picture"),
+    path('menuManage', views.menuManage, name="menuManage"),
 ]
