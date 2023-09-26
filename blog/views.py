@@ -68,31 +68,61 @@ def wrong_login(request):
 
 def homepage_views_afterLogin(request):
     if request.method == 'POST':
-        post_list = Post.objects.all().order_by('-published')
-        paginator = Paginator(post_list, 2) # Show x post per page.
-        post_number = request.GET.get('page')
-        post = paginator.get_page(post_number)
-        category = Category.objects.all()
-        access_token = request.session.get('access_token')
         store_no = request.POST.get('store_no')
         store_name = request.POST.get('store_name')
-        request.session['store_no'] = request.POST.get('store_no')
-        request.session['store_name'] = request.POST.get('store_name')
-        store_no_session = request.session.get('store_no')
-        store_name_session = request.session.get('store_name')
-        context = {
-            'store_no': store_no_session,  
-            'store_name': store_name_session,
+        print(store_no)
+        print(store_name)
+        request.session['store_no'] = store_no
+        request.session['store_name'] = store_name
+        url = 'https://api.kulpick.com/api/v1/product'
+        product_list = []  # 음식명과 가격을 번갈아 저장할 리스트
+        access_token = request.session.get('access_token')
+        print(access_token)
+        product_name = None
+        for key, value in request.POST.items():
+            print('key')
+            print(key)
+            print(value)
+            if key.startswith('product_'):
+                if product_name is not None:
+                    product_list.append([product_name, value])
+                    product_name = None
+                else:
+                    product_name = value
+        headers = {
+            'Authorization': f'Bearer {access_token}'  # Bearer 스킴을 사용한 토큰 포함
         }
-        return render(request, 'index.html', context)
+        print(product_list)
+        # 이제 product_list에는 음식명과 가격이 번갈아가면서 저장됩니다.
+        # 필요한 작업을 수행하고 응답을 반환
+        context = {}
+        for item in product_list:
+            product_name, product_price = item
+            a = normalize_price(product_price)
+            data = {
+                "storeNo": store_no,
+                "productName": product_name,
+                "price": a,
+                "photoImgPaths": []
+            }
+            response = requests.post(url,headers=headers, json = data)
+            print('response')
+            print(response)
+        url2 = 'https://api.kulpick.com/api/v1/product/list'
+        data2 = {
+            "storeNo": store_no,
+            "pageCnt":'0'
+        }
+        response2 = requests.get(url2,headers=headers, params = data2)
+        print('response2')
+        print(response2)
+        data_list = json.loads(response2.text)
+        context = data_list
+        print(context)
+        return render(request, 'menu.html',context)
     else:
-        store_no_session = request.session.get('store_no')
-        store_name_session = request.session.get('store_name')
-        context = {
-            'store_no': store_no_session,  
-            'store_name': store_name_session,
-        }
-        return render(request, 'index.html', context)
+        # POST 요청이 아닌 경우 다른 작업을 수행하거나 적절한 응답을 반환할 수 있습니다.
+        return HttpResponse('POST 요청이 아닙니다.')
 
 def post_views(request, slug, id):
     post = Post.objects.get(slug=slug, id=id)
@@ -163,7 +193,7 @@ def take_picture(request):
                     price = int(price) * 100
                 item['price'] = price
 
-            return render(request, 'api_result.html', context)
+            return render(request, 'menuManage.html', context)
         else:
             return JsonResponse({'error': 'Image not found in the request'}, status=400)
 
@@ -223,18 +253,21 @@ def upload_product(request):
                 "price": a,
                 "photoImgPaths": []
             }
-            url2 = 'https://api.kulpick.com/api/v1/product/list'
-            data2 = {
-                "storeNo": store_no_session,
-                "pageCnt":'0'
-            }
             response = requests.post(url,headers=headers, json = data)
-            response2 = requests.get(url2,headers=headers, params = data2)
-            data_list = json.loads(response2.text)
-            context = data_list
+            print('response')
+            print(response)
+        url2 = 'https://api.kulpick.com/api/v1/product/list'
+        data2 = {
+            "storeNo": store_no_session,
+            "pageCnt":'0'
+        }
+        response2 = requests.get(url2,headers=headers, params = data2)
+        print('response2')
+        print(response2)
+        data_list = json.loads(response2.text)
+        context = data_list
 
-        print(context)
-        return render(request, 'upload_done.html',context)
+        return render(request, 'menu.html',context)
     else:
         # POST 요청이 아닌 경우 다른 작업을 수행하거나 적절한 응답을 반환할 수 있습니다.
         return HttpResponse('POST 요청이 아닙니다.')
@@ -298,7 +331,7 @@ def select_store(request):
         print("storeNo:", store_no)
     data_list = json.loads(response.text)
     context = data_list
-    return render(request, 'select_store.html', {'store_list': store_list})
+    return render(request, 'select_store2.html', {'store_list': store_list})
 
 def flowbite_test(request):
    

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -20,51 +21,31 @@
       <span></span>
     </a>
   </div>
+   
   <div class="cont menu_regist">
-    <div class="regist_list">
-      <ul>
-        <li>
-          <select name="" id="">
-            <option value="">메뉴명1</option>
-            <option value="">메뉴명2</option>
-            <option value="">메뉴명3</option>
-          </select>
-          <select name="" id="">
-            <option value="">메뉴가격1</option>
-            <option value="">메뉴가격2</option>
-            <option value="">메뉴가격3</option>
-          </select>
-        </li>
-        <li>
-          <select name="" id="">
-            <option value="">메뉴명1</option>
-            <option value="">메뉴명2</option>
-            <option value="">메뉴명3</option>
-          </select>
-          <select name="" id="">
-            <option value="">메뉴가격1</option>
-            <option value="">메뉴가격2</option>
-            <option value="">메뉴가격3</option>
-          </select>
-        </li>
-        <li>
-          <select name="" id="">
-            <option value="">메뉴명1</option>
-            <option value="">메뉴명2</option>
-            <option value="">메뉴명3</option>
-          </select>
-          <select name="" id="">
-            <option value="">메뉴가격1</option>
-            <option value="">메뉴가격2</option>
-            <option value="">메뉴가격3</option>
-          </select>
-        </li>
-      </ul>
+    <form method="post" action="{% url 'upload_product' %}">
+      {% csrf_token %} 
+        <div class="regist_list">
+          <ul>
+            {% for item in menu %}
+            <li>
+              <select id="product-{{ forloop.counter }}" name="product_{{ forloop.counter }}">
+                <option value="{{ item.productName }}">{{ item.productName }}</option>
+              </select>
+              <select id="product-{{ forloop.counter }}" name="product_price_{{ forloop.counter }}">
+                <option value="{{ item.price }}">{{ item.price}}</option>
+              </select>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        
+        <div class="btn" type="submit">
+          <button>메뉴등록</button>
+        </div>
+      </form>
     </div>
-    <div class="btn">
-      <a href="#">메뉴등록</a>
-    </div>
-  </div>
+  
   
   <script>
     var burger = $('.hamburger');

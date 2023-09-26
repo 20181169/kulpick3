@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>꿀픽 매장관리</title>
+  <script
+  src="https://code.jquery.com/jquery-3.7.1.min.js"
+  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+  crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="{% static "blog/assets/css/store.css" %}" />
+</head>
+<body>
+  <div class="top">
+    <h1>매장선택</h1>
+    <div class="util">
+      <a href="#" class="top_btn">메뉴등록</a>
+      <a href="#" class="hamburger">  
+        <span></span>
+        <span></span>
+        <span></span>
+      </a>
+    </div>
+  </div>
+  <form id="storeForm" method="post" action="{% url 'homepage_views_afterLogin' %}">
+    {% csrf_token %}
+        <div class="cont">
+            <div class="menu_list">
+            <ul>
+                {% for store in store_list %}
+                <li>
+                <div class="img_box">
+                    <img src="{{ store.photoImgPath }}" %}" alt="thumbnail">
+                </div>
+                <div class="info" type ="submit">
+                    <button class="storeNameLink" data-store-no="{{ store.storeNo }}" data-store-name="{{ store.storeName }}"> {{ store.storeName }}</button>
+                </div>
+                </li>
+                {% endfor %}
+            </ul>
+            </div>
+        </div>
+        <input type="hidden" id="selectedStoreNo" name="store_no" value="">
+        <input type="hidden" id="selectedStoreName" name="store_name" value="">
+    </form>
+
+  <script>
+    function showLoadingBar() {
+			var loadingContainer = document.querySelector('.loading-container');
+
+			// 로딩 바를 나타내기 위해 display 속성을 'block'으로 변경
+			loadingContainer.style.display = 'block';
+		}
+		function previewImage(input) {
+			var preview = document.getElementById('preview-image');
+			var retakeButton = document.getElementById('retake-button');
+			var uploadButton = document.getElementById('upload-button');
+			var uploadLabel = document.querySelector('label[for="camera-input"]');
+	
+			if (input.files && input.files[0]) {
+				var reader = new FileReader();
+	
+				reader.onload = function (e) {
+					preview.src = e.target.result;
+					preview.style.display = 'block';
+					uploadLabel.style.display = 'none';
+					retakeButton.style.display = 'block'; // 이미지가 선택되면 "다시 촬영" 버튼을 표시합니다.
+					uploadButton.style.display = 'block'; // 이미지가 선택되면 "업로드" 버튼을 표시합니다.
+	
+					// "업로드" 버튼 클릭했을 때 처리
+					document.getElementById('upload-button').addEventListener('click', function () {
+						console.log('showLoadingBar')
+						showLoadingBar(); // 업로드 버튼 클릭 시 로딩 바를 표시합니다.
+	
+						// 이후에 업로드 로직을 처리할 수 있도록 구현합니다.
+						// 예: 이미지 업로드 API 호출 등
+					});
+				};
+	
+				reader.readAsDataURL(input.files[0]);
+			}
+		}
+	    document.addEventListener("DOMContentLoaded", function() {
+            // 모든 가게명(h2)에 클릭 이벤트를 추가
+            var storeNameLinks = document.querySelectorAll(".storeNameLink");
+            storeNameLinks.forEach(function(link) {
+                link.addEventListener("click", function() {
+                    // 클릭된 가게명의 store_no 값을 읽어서 폼에 설정
+                    var storeNo = this.getAttribute("data-store-no");
+                    var storeForm = document.getElementById("storeForm");
+                    var storeNoInput = storeForm.querySelector("input[name='store_no']");
+                    storeNoInput.value = storeNo;
+                    
+                    // 폼 자동 제출
+                    storeForm.submit();
+                });
+            });
+        });
+		// "다시 촬영" 버튼을 클릭했을 때 input 필드를 리셋합니다.
+        document.addEventListener('DOMContentLoaded', function () {
+        var loginForm = document.querySelector('.login-form');
+        var loginButton = document.getElementById('login-button');
+        var takePictureButton = document.getElementById('take-picture-button'); // 사진 촬영 버튼
+
+        // 페이지 로드 시에는 로그인 폼만 보이도록 설정
+        loginForm.style.display = 'none';
+        takePictureButton.style.display = 'none'; // 사진 촬영 버튼도 숨깁니다.
+
+        // 로그인 버튼을 클릭할 때 로그인 폼을 표시하고 버튼 숨기기
+        loginButton.addEventListener('click', function () {
+            loginForm.style.display = 'block';
+            loginButton.style.display = 'none';
+        });
+
+        // 로그인 폼을 제출할 때 로그인이 성공했는지 여부를 확인하고 사진 촬영 버튼을 표시합니다.
+        loginForm.addEventListener('submit', function (event) {
+            event.preventDefault(); // 기본 폼 제출 동작을 막습니다. 페이지 이동을 방지합니다.
+            var access_token = "{{ request.session.access_token }}";
+            // 여기에 로그인 처리 코드를 추가합니다.
+            console.log(access_token)
+            // 예: 사용자가 로그인에 성공하면 아래의 코드를 실행합니다.
+            if (access_token !== null && access_token !== undefined) {
+                var loginSuccess = true; // access_token이 존재하면 로그인 성공으로 가정
+            } else {
+                var loginSuccess = false; // access_token이 없으면 로그인 실패로 가정
+            }
+
+            if (loginSuccess) {
+                takePictureButton.style.display = 'block'; // 로그인 성공 후에 사진 촬영 버튼 표시
+            }
+        });
+    });
+        
+    document.addEventListener("DOMContentLoaded", function() {
+        const storeButtons = document.querySelectorAll(".storeNameLink");
+        const selectedStoreNoInput = document.getElementById("selectedStoreNo");
+        const selectedStoreNameInput = document.getElementById("selectedStoreName");
+
+        storeButtons.forEach(button => {
+            button.addEventListener("click", function(event) {
+                const storeNo = event.currentTarget.getAttribute("data-store-no");
+                const storeName = event.currentTarget.getAttribute("data-store-name"); 
+                
+                selectedStoreNoInput.value = storeNo;
+                selectedStoreNameInput.value = storeName;
+                
+                // 선택한 가게의 storeNo와 storeName을 서버로 전송할 수 있도록 폼의 숨겨진 입력 필드에 할당
+                document.getElementById("storeForm").submit(); // 폼 제출
+            });
+        });
+    });
+
+
+		document.getElementById('retake-button').addEventListener('click', function () {
+			var input = document.getElementById('camera-input');
+			input.value = ''; // input 필드 초기화
+			var preview = document.getElementById('preview-image');
+			preview.style.display = 'none'; // 이미지 미리 보기 숨기기
+			var uploadLabel = document.querySelector('label[for="camera-input"]');
+			var retakeButton = document.getElementById('retake-button');
+			var uploadButton = document.getElementById('upload-button');
+			uploadLabel.style.display = 'block';
+			retakeButton.style.display = 'none'; // "다시 촬영" 버튼 숨기기
+			uploadButton.style.display = 'none'; // "업로드" 버튼 숨기기
+		});
+        document.getElementById('login-button').addEventListener('click', function () {
+        var loginForm = document.querySelector('.login-form');
+
+        // 로그인 폼의 현재 표시 상태를 가져옵니다.
+        var isLoginFormVisible = window.getComputedStyle(loginForm).display === 'block';
+
+        // 로그인 폼의 표시 상태를 변경합니다.
+        if (isLoginFormVisible) {
+            loginForm.style.display = 'none'; // 로그인 폼이 이미 보이는 경우, 숨깁니다.
+        } else {
+            loginForm.style.display = 'block'; // 로그인 폼이 숨겨져 있는 경우, 표시합니다.
+        }
+        });
+
+        // 회원가입 버튼을 클릭하면 로그인 폼을 보여주는 함수
+        document.getElementById('register-button').addEventListener('click', function () {
+            var loginForm = document.querySelector('.login-form');
+            var registerForm = document.querySelector('.register-form');
+
+            // 회원가입 폼을 숨깁니다.
+            registerForm.style.display = 'none';
+
+            // 로그인 폼을 표시합니다. <input type="hidden" name="store_name" value="{{ store.storeName }}">
+            loginForm.style.display = 'block';
+        });
+
+
+    var burger = $('.hamburger');
+
+    burger.each(function(index){
+      var $this = $(this);
+      
+      $this.on('click', function(e){
+        e.preventDefault();
+        $(this).toggleClass('active-' + (index+1));
+      })
+    });
+  </script>
+</body>
+</html>

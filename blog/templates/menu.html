@@ -26,44 +26,23 @@
   <div class="cont">
     <div class="menu_list">
       <ul>
+        {% for product in result.data.productList %}
         <li>
           <div class="img_box">
             <img src="{% static "blog/images/bg06.jpg" %}" alt="thumbnail">
           </div>
           <div class="info">
-            정보가 들어갑니다.
-            정보가 들어갑니다.
-            정보가 들어갑니다.
-            정보가 들어갑니다.
+            <span>{{ product.productName }}</span>
+            : <span>{{ product.price }}원</span>
           </div>
         </li>
-        <li>
-          <div class="img_box">
-            <img src="{% static "blog/images/bg06.jpg" %}" alt="thumbnail">
-          </div>
-          <div class="info">
-            정보가 들어갑니다.
-            정보가 들어갑니다.
-            정보가 들어갑니다.
-            정보가 들어갑니다.
-          </div>
-        </li>
-        <li>
-          <div class="img_box">
-            <img src="{% static "blog/images/bg06.jpg" %}" alt="thumbnail">
-          </div>
-          <div class="info">
-            정보가 들어갑니다.
-            정보가 들어갑니다.
-            정보가 들어갑니다.
-            정보가 들어갑니다.
-          </div>
-        </li>
+        {% endfor %}
       </ul>
     </div>
+    
     <div class="btn">
       <a href="#">메뉴등록</a>
-      <a href="#">일괄등록</a>
+      <a href="picture">일괄등록</a>
     </div>
   </div>
 
