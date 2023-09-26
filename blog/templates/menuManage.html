@@ -29,12 +29,8 @@
           <ul>
             {% for item in menu %}
             <li>
-              <select id="product-{{ forloop.counter }}" name="product_{{ forloop.counter }}">
-                <option value="{{ item.productName }}">{{ item.productName }}</option>
-              </select>
-              <select id="product-{{ forloop.counter }}" name="product_price_{{ forloop.counter }}">
-                <option value="{{ item.price }}">{{ item.price}}</option>
-              </select>
+              <input type="text" id="product-{{ forloop.counter }}" name="product_{{ forloop.counter }}" value="{{ item.productName }}">
+              <input type="text" id="product-{{ forloop.counter }}" name="product_price_{{ forloop.counter }}" value="{{ item.price }}">
             </li>
             {% endfor %}
           </ul>
