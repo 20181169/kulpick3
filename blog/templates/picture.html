@@ -36,7 +36,8 @@
   </div>
   <div class="cont picture_wrap">
     <div class="picture">
-      <img id="preview-image" src="" alt ="스캔사진">
+      <img id="preview-image" src="" alt ="스캔사진" style="display: none;">
+      <p id="pic_reg_txt">사진을 등록해주세요.</p>
     </div>
     
     <form method="post" action="{% url 'take_picture' %}" enctype="multipart/form-data" style="text-align: center;">
@@ -99,6 +100,7 @@
 			var retakeButton = document.getElementById('retake-button');
 			var uploadButton = document.getElementById('upload-button');
 			var uploadLabel = document.querySelector('label[for="camera-input"]');
+      var picRegTxt = document.getElementById('pic_reg_txt');
 	
 			if (input.files && input.files[0]) {
 				var reader = new FileReader();
@@ -109,6 +111,7 @@
 					uploadLabel.style.display = 'none';
 					retakeButton.style.display = 'block'; // 이미지가 선택되면 "다시 촬영" 버튼을 표시합니다.
 					uploadButton.style.display = 'block'; // 이미지가 선택되면 "업로드" 버튼을 표시합니다.
+          picRegTxt.style.display = 'none';
 	
 					// "업로드" 버튼 클릭했을 때 처리
 					document.getElementById('upload-button').addEventListener('click', function () {

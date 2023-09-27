@@ -162,7 +162,8 @@ button {
   align-items: center;
   justify-content: flex-end;
 }
-.btn > a {
+.btn > a,
+.custom-file-label {
   background-color: #fec700;
   padding: 8px 12px;
   font-weight: bold;
@@ -195,6 +196,17 @@ button {
 .menu_list > ul > li .info > strong {
   margin-bottom: 10px;
 }
+.menu_list.special > ul > li > form {
+  width: 100%;
+}
+.menu_list.special > ul > li > form > div {
+  display: flex;
+}
+.menu_list.special > ul > li > form button {
+  margin-top: 10px;
+  margin-left: 0;
+  width: 100%;
+}
 .picture_wrap .btn,
 .menu_regist .btn,
 .special_pd .btn {
@@ -224,6 +236,9 @@ button {
   padding: 10px;
   border-radius: 10px;
   font-weight: 600;
+}
+#pic_reg_txt {
+  text-align: center;
 }
 
 .loading-container {

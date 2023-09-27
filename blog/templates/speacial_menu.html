@@ -32,21 +32,24 @@
     </ul>
   </div>
   <div class="cont">
-    <div class="menu_list">
+    <div class="menu_list special">
       <ul>
         {% for product in result.data.productList %}
-        <form method="post" action="{% url 'special' %}">
-        {% csrf_token %}
         <li>
-          <div class="img_box">
-            <img src="{% static "blog/images/bg06.jpg" %}" alt="thumbnail">
-          </div>
-          <div class="info">
-            <button type="submit" class="info">{{ product.productName }}</button>
-            <span>{{ product.price }}원</span>
-          </div>
+          <form method="post" action="{% url 'special' %}">
+            {% csrf_token %}
+            <div>
+              <div class="img_box">
+                <img src="{% static "blog/images/bg06.jpg" %}" alt="thumbnail">
+              </div>
+              <div class="info">
+                <strong>{{ product.productName }}</strong>
+                <span>{{ product.price }}원</span>
+              </div>
+            </div>
+            <button type="submit" class="info">등록</button>
+          </form>
         </li>
-        </form>
         {% endfor %}
       </ul>
     </div>
