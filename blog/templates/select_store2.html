@@ -14,14 +14,6 @@
 <body>
   <div class="top">
     <h1>매장선택</h1>
-    <div class="util">
-      <a href="#" class="top_btn">메뉴등록</a>
-      <a href="#" class="hamburger">  
-        <span></span>
-        <span></span>
-        <span></span>
-      </a>
-    </div>
   </div>
   <form id="storeForm" method="post" action="{% url 'homepage_views_afterLogin' %}">
     {% csrf_token %}

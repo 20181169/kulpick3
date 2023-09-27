@@ -1,6 +1,4 @@
 
-
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -16,42 +14,52 @@
 </head>
 <body>
   <div class="top">
-    <h1>메뉴관리</h1>
-    <a href="#" class="hamburger">  
-      <span></span>
-      <span></span>
-      <span></span>
-    </a>
+    <h1>특가상품등록</h1>
+    <div class="util">
+      <a href="#" class="top_btn">메뉴등록</a>
+      <a href="#" class="hamburger">  
+        <span></span>
+        <span></span>
+        <span></span>
+      </a>
+    </div>
   </div>
   <div class="gnb_list">
     <ul>
       <li><a href="select_store">매장선택(home)</a></li>
-      <li><a href="#">메뉴관리</a></li>
-      <li><a href="speacial_menu">특가상품관리</a></li>
+      <li><a href="homepage_views_afterLogin">메뉴관리</a></li>
+      <li><a href="#">특가상품관리</a></li>
     </ul>
   </div>
-  <div class="cont menu_regist">
-    <form method="post" action="{% url 'upload_product' %}">
-      {% csrf_token %} 
-        <div class="regist_list">
-          <ul>
-            {% for item in menu %}
-            <li>
-              <input type="text" id="product-{{ forloop.counter }}" name="product_{{ forloop.counter }}" value="{{ item.productName }}">
-              <input type="text" id="product-{{ forloop.counter }}" name="product_price_{{ forloop.counter }}" value="{{ item.price }}">
-            </li>
-            {% endfor %}
-          </ul>
-        </div>
-        
-        <div class="btn" type="submit">
-          <button>메뉴등록</button>
-        </div>
-      </form>
+  <div class="cont">
+    <div class="menu_list">
+      <ul>
+        {% for product in result.data.productList %}
+        <form method="post" action="{% url 'special' %}">
+        {% csrf_token %}
+        <li>
+          <div class="img_box">
+            <img src="{% static "blog/images/bg06.jpg" %}" alt="thumbnail">
+          </div>
+          <div class="info">
+            <button type="submit" class="info">{{ product.productName }}</button>
+            <span>{{ product.price }}원</span>
+          </div>
+        </li>
+        </form>
+        {% endfor %}
+      </ul>
     </div>
-  
-  
+    
+    <div class="btn">
+      <a href="#">메뉴등록</a>
+      <a href="picture">일괄등록</a>
+    </div>
+  </div>
+
   <script>
+    
+
     var burger = $('.hamburger');
 
     burger.each(function(index){
@@ -64,6 +72,7 @@
         $("body").toggleClass("overlay");
       })
     });
+    
     var burger = $('.hamburger');
 
     burger.each(function(index){

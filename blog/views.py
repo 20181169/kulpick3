@@ -92,7 +92,6 @@ def homepage_views_afterLogin(request):
         headers = {
             'Authorization': f'Bearer {access_token}'  # Bearer 스킴을 사용한 토큰 포함
         }
-        print(product_list)
         # 이제 product_list에는 음식명과 가격이 번갈아가면서 저장됩니다.
         # 필요한 작업을 수행하고 응답을 반환
         context = {}
@@ -371,6 +370,118 @@ def menuManage(request):
 def special(request):
     
     return render(request, 'special.html')
+
+def speacial_menu(request):
+    if request.method == 'POST':
+        store_no_session = request.session.get('store_no')
+        store_name_session = request.session.get('store_name')
+        store_no = request.POST.get('store_no')
+        store_name = request.POST.get('store_name')
+        print(store_no)
+        print(store_name)
+        request.session['store_no'] = store_no
+        request.session['store_name'] = store_name
+        url = 'https://api.kulpick.com/api/v1/product'
+        product_list = []  # 음식명과 가격을 번갈아 저장할 리스트
+        access_token = request.session.get('access_token')
+        print(access_token)
+        product_name = None
+        for key, value in request.POST.items():
+            print('key')
+            print(key)
+            print(value)
+            if key.startswith('product_'):
+                if product_name is not None:
+                    product_list.append([product_name, value])
+                    product_name = None
+                else:
+                    product_name = value
+        headers = {
+            'Authorization': f'Bearer {access_token}'  # Bearer 스킴을 사용한 토큰 포함
+        }
+        # 이제 product_list에는 음식명과 가격이 번갈아가면서 저장됩니다.
+        # 필요한 작업을 수행하고 응답을 반환
+        context = {}
+        for item in product_list:
+            product_name, product_price = item
+            a = normalize_price(product_price)
+            data = {
+                "storeNo": store_no,
+                "productName": product_name,
+                "price": a,
+                "photoImgPaths": []
+            }
+            response = requests.post(url,headers=headers, json = data)
+            print('response')
+            print(response)
+        url2 = 'https://api.kulpick.com/api/v1/product/list'
+        data2 = {
+            "storeNo": store_no_session,
+            "pageCnt":'0'
+        }
+        response2 = requests.get(url2,headers=headers, params = data2)
+        print('response2')
+        print(response2)
+        data_list = json.loads(response2.text)
+        context = data_list
+        print(context)
+        return render(request, 'speacial_menu.html')
+    else:
+        store_no_session = request.session.get('store_no')
+        store_name_session = request.session.get('store_name')
+        store_no = request.POST.get('store_no')
+        store_name = request.POST.get('store_name')
+        print('store_no_session')
+        print(store_no_session)
+        print(store_name)
+        request.session['store_no'] = store_no
+        request.session['store_name'] = store_name
+        url = 'https://api.kulpick.com/api/v1/product'
+        product_list = []  # 음식명과 가격을 번갈아 저장할 리스트
+        access_token = request.session.get('access_token')
+        print(access_token)
+        product_name = None
+        for key, value in request.POST.items():
+            print('key')
+            print(key)
+            print(value)
+            if key.startswith('product_'):
+                if product_name is not None:
+                    product_list.append([product_name, value])
+                    product_name = None
+                else:
+                    product_name = value
+        headers = {
+            'Authorization': f'Bearer {access_token}'  # Bearer 스킴을 사용한 토큰 포함
+        }
+        # 이제 product_list에는 음식명과 가격이 번갈아가면서 저장됩니다.
+        # 필요한 작업을 수행하고 응답을 반환
+        context = {}
+        for item in product_list:
+            product_name, product_price = item
+            a = normalize_price(product_price)
+            data = {
+                "storeNo": store_no,
+                "productName": product_name,
+                "price": a,
+                "photoImgPaths": []
+            }
+            response = requests.post(url,headers=headers, json = data)
+            print('response')
+            print(response)
+        url2 = 'https://api.kulpick.com/api/v1/product/list'
+        data2 = {
+            "storeNo": store_no_session,
+            "pageCnt":'0'
+        }
+        response2 = requests.get(url2,headers=headers, params = data2)
+        print('response2')
+        print(response2)
+        data_list = json.loads(response2.text)
+        context = data_list
+        print(context)
+        return render(request, 'speacial_menu.html', context)
+    
 """================== template ============================"""
 
 def ai_recommand(request):
@@ -379,7 +490,7 @@ def ai_recommand(request):
 
 def ai_recommand_progress(request):
     if request.method == 'POST':
-        loaded_model = joblib.load("C:/Users/PC/Desktop/git_추천/test999.pkl")
+        loaded_model = joblib.load("C:/Users/PC/Desktop/git_추천_ver3/test999.pkl")
         default_input = request.POST.get('default_input')
         product2 = request.POST.get('product')
         weather2 = request.POST.get('weather')
@@ -472,7 +583,251 @@ def ai_recommand_progress(request):
             'prediction' : round(prediction[0]),
             'discount' : prediction[1]*100,
         }
-    return render(request, 'ai_recommand_done.html', context)
+
+        return render(request, 'ai_recommand_done.html', context)
+    else:
+        loaded_model = joblib.load("C:/Users/PC/Desktop/git_추천_ver3/test999.pkl")
+        default_input = request.POST.get('default_input')
+        product2 = request.POST.get('product')
+        weather2 = request.POST.get('weather')
+        event2 = request.POST.get('event')
+        time2 = request.POST.get('time')
+        products = pd.DataFrame({
+        '상품종류': ['product1', 'product2', 'product3', 'product4', 'product5'],
+        '마진율': [0.2, 0.3, 0.3, 0.4, 0.5],
+        '가격': [5000, 7000, 9000, 10000, 12000],
+        '할인율': [random.uniform(1 * margin_rate, 0.5 * margin_rate) for margin_rate in [0.2, 0.3, 0.3, 0.4, 0.5]],
+        })
+        data_size = 100
+        product = random.choices(products['상품종류'], k=data_size)
+        margin_rate = [products.loc[products['상품종류'] == p, '마진율'].values[0] for p in product]
+        price = [products.loc[products['상품종류'] == p, '가격'].values[0] for p in product]
+        discount_rate = [products.loc[products['상품종류'] == p, '할인율'].values[0] for p in product]
+        weather = random.choices(['맑음', '흐림', '비'], k=data_size)
+        event = random.choices([0, 1], k=data_size)
+        sale_time = random.choices(['오전', '오후'], k=data_size)
+        df = pd.DataFrame({
+            '상품종류': product,
+            '마진율': margin_rate,
+            '가격': price,
+            '할인율': discount_rate,
+            '날씨': weather,
+            '이벤트 여부': event,
+            '판매시간': sale_time,
+            '판매량': np.random.randint(1, 10, size=data_size)
+        })
+        le_product_type = LabelEncoder()
+        le_weather = LabelEncoder()
+        le_sale_time = LabelEncoder()
+        le_product_type.fit(df['상품종류'])
+        le_weather.fit(df['날씨'])
+        le_sale_time.fit(df['판매시간'])
+
+    
+        address = default_input
+        product_type = 'product2'
+        weather = '맑음'
+        event = '1'
+        sale_time = '오후'
+        # location_type = st.selectbox('거리상권환경', ['대로변 1층', '아파트 상가', '소로변'])
+
+        print('1')
+        print('le_product_type.transform([product_type])[0]')
+        print([product_type])
+        print('1.5')
+        product_type_encoded = le_product_type.transform([product_type])[0]
+        
+        print('2')
+        weather_encoded = le_weather.transform([weather])[0]
+        sale_time_encoded = le_sale_time.transform([sale_time])[0]
+        event = event
+
+        input_data = pd.DataFrame([[
+            product_type_encoded,
+            products.loc[products['상품종류'] == product_type, '마진율'].values[0],
+            products.loc[products['상품종류'] == product_type, '가격'].values[0],
+            weather_encoded,
+            event,
+            sale_time_encoded
+        ]])
+
+        prediction = loaded_model.predict(input_data)[0]
+        area_type, area_detail = sla.find_biz_ara_info(address)
+        # 주변상권환경 및 거리상권환경에 따른 조정 
+        # (상품군에 따른 특가상품 판매 데이터에 대한 통계치 이용으로 변경예정 - 꿀픽을 통한 데이터 확보 시)
+        if area_type == '골목상권':        
+            prediction[0] *= 0.8
+        elif area_type == '관광특구': # 관광특구 내 이벤트 발생시 가중치 증가
+            kk = 1 # 관광특구 가중치 설정
+            prediction[0] *= (0.8 + event * kk)
+        elif area_type == '전통시장': 
+            prediction[0] *= 1.2
+        else:  # 발달상권
+            prediction[0] *= 2
+        
+        # 만일 추천 할인율이 마진율보다 크다면, 마진율로 설정 (최소 이익을 위해 변경 가능)
+        if prediction[1] > products.loc[products['상품종류'] == product_type, '마진율'].values[0] :
+            prediction[1] = products.loc[products['상품종류'] == product_type, '마진율'].values[0]
+
+        print(f'점포가 위치한 상권: {area_detail}')
+        print(f'점포 위치 상권종류: {area_type}')
+        print(f'추천 판매 수량: {round(prediction[0])}')
+        print(f'추천 할인율: {prediction[1]*100:.2f}%')
+        context = {
+            'area_detail' : area_detail,
+            'area_type' : area_type,
+            'prediction' : round(prediction[0]),
+            'discount' : prediction[1]*100,
+        }
+        return render(request, 'ai_recommand_done.html', context)
+    
+
+def speacial_result(request):
+    start_time = None
+    end_time = None
+    if request.method == 'POST':
+        start_time = request.POST.get('start_time')
+        end_time = request.POST.get('end_time')
+        loaded_model = joblib.load("C:/Users/PC/Desktop/git_추천_ver3/test999.pkl")
+        default_input = request.POST.get('default_input')
+        product2 = request.POST.get('product')
+        weather2 = request.POST.get('weather')
+        event2 = request.POST.get('event')
+        time2 = request.POST.get('time')
+        products = pd.DataFrame({
+        '상품종류': ['product1', 'product2', 'product3', 'product4', 'product5'],
+        '마진율': [0.2, 0.3, 0.3, 0.4, 0.5],
+        '가격': [5000, 7000, 9000, 10000, 12000],
+        '할인율': [random.uniform(1 * margin_rate, 0.5 * margin_rate) for margin_rate in [0.2, 0.3, 0.3, 0.4, 0.5]],
+        })
+        data_size = 100
+        product = random.choices(products['상품종류'], k=data_size)
+        margin_rate = [products.loc[products['상품종류'] == p, '마진율'].values[0] for p in product]
+        price = [products.loc[products['상품종류'] == p, '가격'].values[0] for p in product]
+        discount_rate = [products.loc[products['상품종류'] == p, '할인율'].values[0] for p in product]
+        weather = random.choices(['맑음', '흐림', '비'], k=data_size)
+        event = random.choices([0, 1], k=data_size)
+        sale_time = random.choices(['오전', '오후'], k=data_size)
+        df = pd.DataFrame({
+            '상품종류': product,
+            '마진율': margin_rate,
+            '가격': price,
+            '할인율': discount_rate,
+            '날씨': weather,
+            '이벤트 여부': event,
+            '판매시간': sale_time,
+            '판매량': np.random.randint(1, 10, size=data_size)
+        })
+        le_product_type = LabelEncoder()
+        le_weather = LabelEncoder()
+        le_sale_time = LabelEncoder()
+        le_product_type.fit(df['상품종류'])
+        le_weather.fit(df['날씨'])
+        le_sale_time.fit(df['판매시간'])
+
+    
+        address = default_input
+        product_type = 'product2'
+        weather = '맑음'
+        event = '1'
+        sale_time = '오후'
+        # location_type = st.selectbox('거리상권환경', ['대로변 1층', '아파트 상가', '소로변'])
+
+        print('1')
+        print('le_product_type.transform([product_type])[0]')
+        print([product_type])
+        print('1.5')
+        product_type_encoded = le_product_type.transform([product_type])[0]
+        
+        print('2')
+        weather_encoded = le_weather.transform([weather])[0]
+        sale_time_encoded = le_sale_time.transform([sale_time])[0]
+        event = event
+
+        input_data = pd.DataFrame([[
+            product_type_encoded,
+            products.loc[products['상품종류'] == product_type, '마진율'].values[0],
+            products.loc[products['상품종류'] == product_type, '가격'].values[0],
+            weather_encoded,
+            event,
+            sale_time_encoded
+        ]])
+
+        prediction = loaded_model.predict(input_data)[0]
+        area_type, area_detail = sla.find_biz_ara_info(address)
+        # 주변상권환경 및 거리상권환경에 따른 조정 
+        # (상품군에 따른 특가상품 판매 데이터에 대한 통계치 이용으로 변경예정 - 꿀픽을 통한 데이터 확보 시)
+        if area_type == '골목상권':        
+            prediction[0] *= 0.8
+        elif area_type == '관광특구': # 관광특구 내 이벤트 발생시 가중치 증가
+            kk = 1 # 관광특구 가중치 설정
+            prediction[0] *= (0.8 + event * kk)
+        elif area_type == '전통시장': 
+            prediction[0] *= 1.2
+        else:  # 발달상권
+            prediction[0] *= 2
+        
+        # 만일 추천 할인율이 마진율보다 크다면, 마진율로 설정 (최소 이익을 위해 변경 가능)
+        if prediction[1] > products.loc[products['상품종류'] == product_type, '마진율'].values[0] :
+            prediction[1] = products.loc[products['상품종류'] == product_type, '마진율'].values[0]
+
+        print(f'점포가 위치한 상권: {area_detail}')
+        print(f'점포 위치 상권종류: {area_type}')
+        print(f'추천 판매 수량: {round(prediction[0])}')
+        print(f'추천 할인율: {prediction[1]*100:.2f}%')
+        context = {
+            'area_detail' : area_detail,
+            'area_type' : area_type,
+            'prediction' : round(prediction[0]),
+            'discount' : prediction[1]*100,
+        }
+        context = {
+            'start_time': start_time,
+            'end_time': end_time,
+            'prediction' : round(prediction[0]),
+            'discount' : prediction[1]*100,
+        }
+        request.session['ai_recommend_session_start_time'] = start_time
+        request.session['ai_recommend_session_end_time'] = end_time
+        request.session['ai_recommend_session_prediction'] = round(prediction[0])
+        request.session['ai_recommend_session_discount'] = prediction[1]*100
+        return render(request, 'speacial_result.html', context)
+    
+
+def upload_speacial_product(request):
+    if request.method == 'POST':
+        explain = request.POST.get('explain')
+        ai_recommend_session_start_time = request.session.get('ai_recommend_session_start_time')
+        ai_recommend_session_end_time = request.session.get('ai_recommend_session_end_time')
+        ai_recommend_session_prediction = request.session.get('ai_recommend_session_prediction')
+        ai_recommend_session_discount = request.session.get('ai_recommend_session_discount')
+        url = 'https://api.kulpick.com/api/v1/product/timesale'
+        access_token = request.session.get('access_token')
+        headers = {
+                    'Authorization': f'Bearer {access_token}'  # Bearer 스킴을 사용한 토큰 포함
+                }
+        print('출력들')
+        print(ai_recommend_session_start_time)
+        print(ai_recommend_session_end_time)
+        print(ai_recommend_session_prediction)
+        print(ai_recommend_session_discount)
+        a = str(int(ai_recommend_session_discount))
+        print(a)
+        print(type(a))
+        data = {
+            "productNo": "595",
+            "timeType": "1",
+            "startTime": ai_recommend_session_start_time,
+            "endTime": ai_recommend_session_end_time,
+            "discountPrice": "",
+            "discountRate": a,
+            "timesaleCnt": ai_recommend_session_prediction,
+            "memo": explain
+        }
+        response = requests.post(url,headers=headers, json = data)
+        print(response.text)
+        return render(request, 'select_store2.html')
+
 
 
 

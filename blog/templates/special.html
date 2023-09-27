@@ -47,18 +47,28 @@
     </div>
     <div class="special_box">
       <table>
-        <tr>
-          <th>시간</th>
-          <td colspan="2">10:00 ~ 12:00</td>
-        </tr>
-        <tr>
-          <th>할인</th>
-          <td>50%</td>
-          <td rowspan="2" class="ai"><a href="#" class="ai_btn">AI 추천<br>받기</a></td>
-        </tr>
+        <form method="post" action="{% url 'speacial_result' %}">
+          {% csrf_token %} 
+          <tr>
+            <th>시작시간</th>
+            <td colspan="2">
+              <input type="text" name="start_time" id="start_time_input">
+            </td>
+          </tr>
+          <tr>
+            <th>마감시간</th>
+            <td colspan="2">
+              <input type="text" name="end_time" id="end_time_input">
+            </td>
+          </tr>
+            <th>할인</th>
+            <td>추천할인율 계산</td>
+            <td rowspan="2" class="ai"><button class="ai_btn" type="submit">AI 추천<br>받기</button></td>
+          </tr>
+        </form>      
         <tr>
           <th>개수</th>
-          <td>5개</td>          
+          <td>추천판매수량 계산</td>          
         </tr>
         <tr>
           <th>설명</th>
@@ -87,3 +97,12 @@
   </script>
 </body>
 </html>
+
+<div class="gnb_list">
+  <ul>
+    <li><a href="select_store">매장선택(home)</a></li>
+    <li><a href="homepage_views_afterLogin">메뉴관리</a></li>
+    <li><a href="#">특가상품관리</a></li>
+  </ul>
+</div>
+

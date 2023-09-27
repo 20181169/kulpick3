@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>꿀픽 매장관리</title>
+  <script
+  src="https://code.jquery.com/jquery-3.7.1.min.js"
+  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+  crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="{% static "blog/assets/css/store.css" %}" />
+</head>
+<body>
+  <div class="top">
+    <h1>특가상품목록</h1>
+    <div class="util">
+      <a href="#" class="hamburger">  
+        <span></span>
+        <span></span>
+        <span></span>
+      </a>
+    </div>
+    <div class="gnb_list">
+      <ul>
+        <li><a href="select_store">매장선택(home)</a></li>
+        <li><a href="homepage_views_afterLogin">메뉴관리</a></li>
+        <li><a href="#">특가상품관리</a></li>
+      </ul>
+    </div>
+  </div>
+    <div class="cont special_pd">
+      <div class="menu_list">
+        <ul>
+          <li>
+            <div class="img_box">
+              <img src="{% static "blog/images/bg06.jpg" %}" alt="thumbnail">
+            </div>
+            <div class="info">
+              정보가 들어갑니다.
+              정보가 들어갑니다.
+              정보가 들어갑니다.
+              정보가 들어갑니다.
+            </div>
+          </li>
+        </ul>
+      </div>
+      <form method="post" action="{% url 'upload_speacial_product' %}">
+        {% csrf_token %} 
+        <div class="special_box">
+          <table>
+            <tr>
+              <th>시작시간</th>
+              <td colspan="2">{{start_time}}</td>
+            </tr>
+            <tr>
+              <th>마감시간</th>
+              <td colspan="2">{{end_time}}</td>
+            </tr>
+            <tr>
+              <th>할인</th>
+              <td>{{discount}}</td>
+              <td rowspan="2" class="ai"><a href="#" class="ai_btn">AI 추천<br>받기</a></td>
+            </tr>
+            <tr>
+              <th>개수</th>
+              <td>{{prediction}}</td>          
+            </tr>
+            <tr>
+              <th>설명</th>
+              <td colspan="2">
+              <input type="text" name="explain" id="explain_input">
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="btn" type="submit">
+          <button>특가 상품 틍록</button>
+        </div>
+    </form>
+    </div>
+  <script>
+    var burger = $('.hamburger');
+
+    burger.each(function(index){
+      var $this = $(this);
+      
+      $this.on('click', function(e){
+        e.preventDefault();
+        $(this).toggleClass('active-' + (index+1));
+        $(".gnb_list").toggleClass("on");
+        $("body").toggleClass("overlay");
+      })
+    });
+  </script>
+</body>
+</html>
+
+<div class="gnb_list">
+  <ul>
+    <li><a href="select_store">매장선택(home)</a></li>
+    <li><a href="homepage_views_afterLogin">메뉴관리</a></li>
+    <li><a href="#">특가상품관리</a></li>
+  </ul>
+</div>
+

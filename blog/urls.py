@@ -20,4 +20,7 @@ urlpatterns = [
     path('picture', views.picture, name="picture"),
     path('menuManage', views.menuManage, name="menuManage"),
     path('special', views.special, name="special"),
+    path('speacial_menu', views.speacial_menu, name="speacial_menu"),
+    path('speacial_result', views.speacial_result, name="speacial_result"),
+    path('upload_speacial_product', views.upload_speacial_product, name="upload_speacial_product"),
 ]

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -26,7 +27,13 @@
       <span></span>
     </a>
   </div>
-
+  <div class="gnb_list">
+    <ul>
+      <li><a href="select_store">매장선택(home)</a></li>
+      <li><a href="#">메뉴관리</a></li>
+      <li><a href="speacial_menu">특가상품관리</a></li>
+    </ul>
+  </div>
   <div class="cont picture_wrap">
     <div class="picture">
       <img id="preview-image" src="" alt ="스캔사진">
@@ -67,6 +74,18 @@
       $this.on('click', function(e){
         e.preventDefault();
         $(this).toggleClass('active-' + (index+1));
+      })
+    });
+    var burger = $('.hamburger');
+
+    burger.each(function(index){
+      var $this = $(this);
+      
+      $this.on('click', function(e){
+        e.preventDefault();
+        $(this).toggleClass('active-' + (index+1));
+        $(".gnb_list").toggleClass("on");
+        $("body").toggleClass("overlay");
       })
     });
 		function showLoadingBar() {
