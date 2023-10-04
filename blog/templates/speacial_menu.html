@@ -47,6 +47,8 @@
                 <span>{{ product.price }}원</span>
               </div>
             </div>
+            <input type="hidden" name="product_name" value="{{ product.productName }}">
+            <input type="hidden" name="product_price" value="{{ product.price }}">
             <button type="submit" class="info">등록</button>
           </form>
         </li>
@@ -85,6 +87,21 @@
         e.preventDefault();
         $(this).toggleClass('active-' + (index+1));
       })
+    });
+    // JavaScript로 버튼 클릭 이벤트 핸들러 추가
+    document.querySelectorAll('button.info').forEach(function(button) {
+      button.addEventListener('click', function(event) {
+
+        var form = button.closest('form');
+
+        var productName = form.querySelector('input[name="product_name"]').value;
+        var productPrice = form.querySelector('input[name="product_price"]').value;
+        
+        form.submit();
+        
+        event.preventDefault(); // 기본 동작 방지
+        return false;
+      });
     });
   </script>
 </body>

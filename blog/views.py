@@ -118,6 +118,15 @@ def homepage_views_afterLogin(request):
         data_list = json.loads(response2.text)
         context = data_list
         print(context)
+
+        url3 = 'https://api.kulpick.com/api/v1/store/info'
+        data3 = {
+            "storeNo": store_no,
+        }
+        response3 = requests.get(url3,headers=headers, params = data3)
+        data4 = json.loads(response3.text)
+        address = data4["result"]["data"]["storeInfo"]["address"]
+        request.session['store_address'] = address
         return render(request, 'menu.html',context)
     else:
         # POST 요청이 아닌 경우 다른 작업을 수행하거나 적절한 응답을 반환할 수 있습니다.
@@ -351,8 +360,8 @@ import geopandas as gpd
 from shapely.geometry import Point
 import requests
 from pyproj import Transformer
-np.random.seed(0)
-random.seed(0)
+np.random.seed()
+random.seed()
 
 """================== template ============================"""
 def menu(request):
@@ -368,8 +377,16 @@ def menuManage(request):
     return render(request, 'menuManage.html')
 
 def special(request):
-    
-    return render(request, 'special.html')
+    product_name = request.POST.get('product_name')
+    product_price = request.POST.get('product_price')
+    context = {
+        'product_name': product_name,
+        'product_price': product_price,
+    }
+    print(context)
+    request.session['gogo_product_name'] = product_name
+    request.session['gogo_product_price'] = product_price
+    return render(request, 'special.html', context)
 
 def speacial_menu(request):
     if request.method == 'POST':
@@ -683,8 +700,15 @@ def ai_recommand_progress(request):
     
 
 def speacial_result(request):
+    margin_rate = random.choice([0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5])
+    print('margin_rate')
+    print(margin_rate)
+    discount_rate = random.uniform(1 * margin_rate, 0.5 * margin_rate)
     start_time = None
     end_time = None
+    store_address = request.session.get('store_address')
+    gogo_product_name = request.session.get('gogo_product_name')
+    gogo_product_price = request.session.get('gogo_product_price')
     if request.method == 'POST':
         start_time = request.POST.get('start_time')
         end_time = request.POST.get('end_time')
@@ -695,10 +719,10 @@ def speacial_result(request):
         event2 = request.POST.get('event')
         time2 = request.POST.get('time')
         products = pd.DataFrame({
-        '상품종류': ['product1', 'product2', 'product3', 'product4', 'product5'],
-        '마진율': [0.2, 0.3, 0.3, 0.4, 0.5],
-        '가격': [5000, 7000, 9000, 10000, 12000],
-        '할인율': [random.uniform(1 * margin_rate, 0.5 * margin_rate) for margin_rate in [0.2, 0.3, 0.3, 0.4, 0.5]],
+        '상품종류': ['product1'],
+        '마진율': [margin_rate],
+        '가격': [5000],
+        '할인율': [discount_rate],
         })
         data_size = 100
         product = random.choices(products['상품종류'], k=data_size)
@@ -726,8 +750,8 @@ def speacial_result(request):
         le_sale_time.fit(df['판매시간'])
 
     
-        address = default_input
-        product_type = 'product2'
+        address = store_address
+        product_type = 'product1'
         weather = '맑음'
         event = '1'
         sale_time = '오후'
@@ -786,17 +810,18 @@ def speacial_result(request):
             'end_time': end_time,
             'prediction' : round(prediction[0]),
             'discount' : prediction[1]*100,
+            'gogo_product_name' : request.session.get('gogo_product_name'),
+            'gogo_product_price' : request.session.get('gogo_product_price')
         }
         request.session['ai_recommend_session_start_time'] = start_time
         request.session['ai_recommend_session_end_time'] = end_time
-        request.session['ai_recommend_session_prediction'] = round(prediction[0])
-        request.session['ai_recommend_session_discount'] = prediction[1]*100
         return render(request, 'speacial_result.html', context)
     
 
 def upload_speacial_product(request):
     if request.method == 'POST':
         explain = request.POST.get('explain')
+        store_address = request.session.get('store_address')
         ai_recommend_session_start_time = request.session.get('ai_recommend_session_start_time')
         ai_recommend_session_end_time = request.session.get('ai_recommend_session_end_time')
         ai_recommend_session_prediction = request.session.get('ai_recommend_session_prediction')
@@ -824,6 +849,17 @@ def upload_speacial_product(request):
             "timesaleCnt": ai_recommend_session_prediction,
             "memo": explain
         }
+        #sample data
+        """{
+        "productNo": "646",
+        "timeType": "1",
+        "startTime": "2022-04-25 23:00:00",
+        "endTime": "2022-04-26 02:00:00",
+        "discountPrice": "",
+        "discountRate": "10",
+        "timesaleCnt": "10",
+        "memo": "간단설명"
+        }"""
         response = requests.post(url,headers=headers, json = data)
         print(response.text)
         return render(request, 'select_store2.html')

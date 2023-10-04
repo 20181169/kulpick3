@@ -16,7 +16,7 @@
   <div class="top">
     <h1>매장선택</h1>
     <div class="util">
-      <a href="#" class="top_btn">메뉴등록</a>
+      <a href="picture" class="top_btn">메뉴등록</a>
       <a href="#" class="hamburger">  
         <span></span>
         <span></span>
@@ -35,21 +35,26 @@
     <div class="menu_list">
       <ul>
         {% for product in result.data.productList %}
-        <li>
-          <div class="img_box">
-            <img src="{% static "blog/images/bg06.jpg" %}" alt="thumbnail">
-          </div>
-          <div class="info">
-            <strong>{{ product.productName }}</strong>
-            <span>{{ product.price }}원</span>
-          </div>
-        </li>
-        {% endfor %}
+          <li>
+            <div class="img_box">
+              {% if product.photoImgPath %}
+                <img src="{{ product.photoImgPath }}" alt="thumbnail">
+              {% else %}
+                <!-- 값이 없을 때 기본 이미지를 표시 -->
+                <img src="{% static "blog/images/bg06.jpg" %}" alt="thumbnail">
+              {% endif %}
+            </div>
+            <div class="info">
+              <strong>{{ product.productName }}</strong>
+              <span>{{ product.price }}원</span>
+            </div>
+          </li>
+          {% endfor %}
       </ul>
     </div>
     
     <div class="btn">
-      <a href="#">메뉴등록</a>
+      <a href="picture">메뉴등록</a>
       <a href="picture">일괄등록</a>
     </div>
   </div>
