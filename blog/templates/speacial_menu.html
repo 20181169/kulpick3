@@ -40,7 +40,12 @@
             {% csrf_token %}
             <div>
               <div class="img_box">
-                <img src="{% static "blog/images/bg06.jpg" %}" alt="thumbnail">
+                {% if product.photoImgPath %}
+                  <img src="{{ product.photoImgPath }}" alt="thumbnail">
+                {% else %}
+                  <!-- 값이 없을 때 기본 이미지를 표시 -->
+                  <img src="{% static "blog/images/bg06.jpg" %}" alt="thumbnail">
+                {% endif %}
               </div>
               <div class="info">
                 <strong>{{ product.productName }}</strong>
@@ -49,6 +54,7 @@
             </div>
             <input type="hidden" name="product_name" value="{{ product.productName }}">
             <input type="hidden" name="product_price" value="{{ product.price }}">
+            <input type="hidden" name="product_image" value="{{ product.photoImgPath }}">
             <button type="submit" class="info">등록</button>
           </form>
         </li>
@@ -96,7 +102,7 @@
 
         var productName = form.querySelector('input[name="product_name"]').value;
         var productPrice = form.querySelector('input[name="product_price"]').value;
-        
+        var productImage = form.querySelector('.img_box img').src;
         form.submit();
         
         event.preventDefault(); // 기본 동작 방지

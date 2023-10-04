@@ -34,7 +34,12 @@
       <ul>
         <li>
           <div class="img_box">
-            <img src="{% static "blog/images/bg06.jpg" %}" alt="thumbnail">
+            {% if product_image %}
+              <img src="{{ product_image }}" alt="thumbnail">
+            {% else %}
+              <!-- 값이 없을 때 기본 이미지를 표시 -->
+              <img src="{% static "blog/images/bg06.jpg" %}" alt="thumbnail">
+            {% endif %}
           </div>
           <div class="info">
             <p>{{ product_name }}</p>

@@ -377,11 +377,15 @@ def menuManage(request):
     return render(request, 'menuManage.html')
 
 def special(request):
+    
     product_name = request.POST.get('product_name')
     product_price = request.POST.get('product_price')
+    product_image = request.POST.get('product_image') 
+    request.session['session_product_image'] = product_image
     context = {
         'product_name': product_name,
         'product_price': product_price,
+        'product_image' : product_image,
     }
     print(context)
     request.session['gogo_product_name'] = product_name
@@ -706,6 +710,9 @@ def speacial_result(request):
     discount_rate = random.uniform(1 * margin_rate, 0.5 * margin_rate)
     start_time = None
     end_time = None
+    product_image = request.session.get('session_product_image')
+    print('speacial_result')
+    print(product_image)
     store_address = request.session.get('store_address')
     gogo_product_name = request.session.get('gogo_product_name')
     gogo_product_price = request.session.get('gogo_product_price')
@@ -757,13 +764,10 @@ def speacial_result(request):
         sale_time = '오후'
         # location_type = st.selectbox('거리상권환경', ['대로변 1층', '아파트 상가', '소로변'])
 
-        print('1')
         print('le_product_type.transform([product_type])[0]')
         print([product_type])
-        print('1.5')
         product_type_encoded = le_product_type.transform([product_type])[0]
         
-        print('2')
         weather_encoded = le_weather.transform([weather])[0]
         sale_time_encoded = le_sale_time.transform([sale_time])[0]
         event = event
@@ -811,7 +815,8 @@ def speacial_result(request):
             'prediction' : round(prediction[0]),
             'discount' : prediction[1]*100,
             'gogo_product_name' : request.session.get('gogo_product_name'),
-            'gogo_product_price' : request.session.get('gogo_product_price')
+            'gogo_product_price' : request.session.get('gogo_product_price'),
+            'product_image' : product_image,
         }
         request.session['ai_recommend_session_start_time'] = start_time
         request.session['ai_recommend_session_end_time'] = end_time
