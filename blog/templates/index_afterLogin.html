@@ -7,7 +7,7 @@
 <html>
 {% load static %}
 <head>
-    <title>Eventually by HTML5 UP</title>
+    <title>꿀픽 매장관리</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="{% static "blog/assets/css/main.css" %}" />
@@ -16,9 +16,36 @@
 #link:hover {color: #CCCCCC}
 
 #link, #link:hover {-webkit-transition: color 0.5s ease-out;-moz-transition: color 0.5s ease-out;-ms-transition: color 0.5s ease-out;-o-transition: color 0.5s ease-out;transition: color 0.5s ease-out;}
+label{color: #333;}
+input[type="text"], input[type="password"], input[type="email"], select, textarea {border: 2px solid #d7d7d7;}
+::-webkit-input-placeholder {
+  color: #838383 !important;
+  opacity: .5; }
 
+:-moz-placeholder {
+  color: #838383 !important;
+  opacity: .5; }
+
+::-moz-placeholder {
+  color: #838383 !important;
+  opacity: .5; }
+
+:-ms-input-placeholder {
+  color: #838383 !important;
+  opacity: .5; }
+
+.formerize-placeholder {
+  color: #838383 !important;
+  opacity: .5; }
+  input[type="text"],
+input[type="password"],
+input[type="email"],
+select,
+textarea {
+    color: #333;
+}
 /** BEGIN CSS **/
-        body {background: #333333;}
+        body {background: #fff;}
         @keyframes rotate-loading {
             0%  {transform: rotate(0deg);-ms-transform: rotate(0deg); -webkit-transform: rotate(0deg); -o-transform: rotate(0deg); -moz-transform: rotate(0deg);}
             100% {transform: rotate(360deg);-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); -o-transform: rotate(360deg); -moz-transform: rotate(360deg);}
@@ -219,7 +246,7 @@
 
 <body class="is-preload">
     <!-- Header -->
-    <header id="header" style="text-align: center;">
+    <header id="header" class="hidden" style="text-align: center;">
         <h1>메뉴판 등록</h1>
         <p>하세요 <!--<a href="http://html5up.net">링크</a>.--></p>
     </header>
@@ -237,8 +264,8 @@
             <button type="submit" id="upload-button" class="fancy-button" style="display: none;">업로드</button>
         </div>
     </form>
-    <button type="button" id="login-button" class="fancy-button mb-4">로그인</button>
-    <button type="button" class="fancy-button mb-4" onclick="window.location.href='{% url 'ai_recommand' %}'">AI 추천</button>
+    <button type="button" id="login-button" class="fancy-button mb-4 hidden">로그인</button>
+    <button type="button" class="fancy-button mb-4 hidden" onclick="window.location.href='{% url 'ai_recommand' %}'">AI 추천</button>
     <form class="register-form" style="display: none;">
         <!-- 회원가입 폼 입력 필드 및 버튼을 여기에 추가 -->
         <!-- 예: 이름, 이메일, 패스워드, 회원가입 버튼 -->
@@ -250,6 +277,7 @@
         <button type="button" id="register-button" class="fancy-button">회원가입</button>
     </form>
 
+    <div style="padding: 0 0 40px;"><img src="{% static "blog/images/logo.png" %}" alt="logo"></div>
     <form class="login-form" method="POST" action="{% url 'login' %}">
         {% csrf_token %}
         <div class="grid gap-6 mb-6 md:grid-cols-2">
@@ -278,17 +306,11 @@
 		<div id="loading-text">loading</div>
 	</div>
     <!-- Footer -->
-    <footer id="footer">
-        <ul class="icons">
-            <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-            <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-            <li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
-            <li><a href="#" class="icon fa-envelope"><span class="label">Email</span></a></li>
-        </ul>
+    <!-- <footer id="footer">
         <ul class="copyright">
-            <li>&copy; Untitled.</li><li>Credits: <a href="http://html5up.net">HTML5 UP</a></li>
+            
         </ul>
-    </footer>
+    </footer> -->
 
     <!-- Scripts -->
     <script src="{% static "blog/assets/js/main.js" %}"></script>
@@ -338,7 +360,7 @@
         var takePictureButton = document.getElementById('take-picture-button'); // 사진 촬영 버튼
 
         // 페이지 로드 시에는 로그인 폼만 보이도록 설정
-        loginForm.style.display = 'none';
+        //loginForm.style.display = 'none';
         takePictureButton.style.display = 'none'; // 사진 촬영 버튼도 숨깁니다.
 
         // 로그인 버튼을 클릭할 때 로그인 폼을 표시하고 버튼 숨기기

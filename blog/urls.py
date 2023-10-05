@@ -23,4 +23,5 @@ urlpatterns = [
     path('speacial_menu', views.speacial_menu, name="speacial_menu"),
     path('speacial_result', views.speacial_result, name="speacial_result"),
     path('upload_speacial_product', views.upload_speacial_product, name="upload_speacial_product"),
+    path('time_speacial', views.time_speacial, name="time_speacial"),
 ]

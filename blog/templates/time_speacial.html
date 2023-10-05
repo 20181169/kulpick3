@@ -16,7 +16,7 @@
   <div class="top">
     <h1>특가상품등록</h1>
     <div class="util">
-      <a href="#" class="top_btn">메뉴등록</a>
+      <a href="speacial_menu" class="top_btn">특가상품등록</a>
       <a href="#" class="hamburger">  
         <span></span>
         <span></span>
@@ -30,11 +30,16 @@
       <li><a href="homepage_views_afterLogin">메뉴관리</a></li>
       <li><a href="#">특가상품관리</a></li>
     </ul>
+    <ul>
+      {% for product in context.result.data.timesaleProductList %}
+          <li>{{ product.productName }}</li>
+      {% endfor %}
+  </ul>
   </div>
   <div class="cont">
     <div class="menu_list special">
       <ul>
-        {% for product in result.data.productList %}
+        {% for product in result.data.timesaleProductList %}
         <li>
           <form method="post" action="{% url 'special' %}">
             {% csrf_token %}
@@ -50,6 +55,7 @@
               <div class="info">
                 <strong>{{ product.productName }}</strong>
                 <span>{{ product.price }}원</span>
+                <span>{{ product.memo }}</span>
               </div>
             </div>
             <input type="hidden" name="product_name" value="{{ product.productName }}">

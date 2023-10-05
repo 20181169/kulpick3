@@ -43,7 +43,7 @@
     <form method="post" action="{% url 'take_picture' %}" enctype="multipart/form-data" style="text-align: center;">
       {% csrf_token %}
         <div class="btn">
-          <button type="button" for="camera-input" class="custom-file-label">사진등록</label>
+          <label type="button" for="camera-input" class="custom-file-label">사진등록</label>
           <input type="file" accept="image/*" capture="camera" class="custom-file-input" id="camera-input" name="camera-input" onchange="previewImage(this)" style="display: none;">
         </div>
         <div class="button-container">
