@@ -28,7 +28,7 @@
     <ul>
       <li><a href="select_store">매장선택(home)</a></li>
       <li><a href="homepage_views_afterLogin">메뉴관리</a></li>
-      <li><a href="#">특가상품관리</a></li>
+      <li><a href="speacial_menu">특가상품관리</a></li>
     </ul>
     <ul>
       {% for product in context.result.data.timesaleProductList %}
@@ -62,7 +62,7 @@
             <input type="hidden" name="product_price" value="{{ product.price }}">
             <input type="hidden" name="product_image" value="{{ product.photoImgPath }}">
             <input type="hidden" name="product_no" value="{{ product.productNo }}">
-            <button type="submit" class="info">등록</button>
+            
           </form>
         </li>
         {% endfor %}

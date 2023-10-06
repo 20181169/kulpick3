@@ -24,4 +24,6 @@ urlpatterns = [
     path('speacial_result', views.speacial_result, name="speacial_result"),
     path('upload_speacial_product', views.upload_speacial_product, name="upload_speacial_product"),
     path('time_speacial', views.time_speacial, name="time_speacial"),
+    path('extract_top_nouns', views.extract_top_nouns, name="extract_top_nouns"),
+    path('keyword_value', views.keyword_value, name="keyword_value"),
 ]

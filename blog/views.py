@@ -424,14 +424,12 @@ def speacial_menu(request):
     else:
         store_no_session = request.session.get('store_no')
         store_name_session = request.session.get('store_name')
-        store_no = request.POST.get('store_no')
-        store_name = request.POST.get('store_name')
-        request.session['store_no'] = store_no
-        request.session['store_name'] = store_name
         url = 'https://api.kulpick.com/api/v1/product'
         product_list = []  # 음식명과 가격을 번갈아 저장할 리스트
         access_token = request.session.get('access_token')
         product_name = None
+        print(store_no_session)
+        print(store_name_session)
         for key, value in request.POST.items():
             if key.startswith('product_'):
                 if product_name is not None:
@@ -449,7 +447,7 @@ def speacial_menu(request):
             product_name, product_price = item
             a = normalize_price(product_price)
             data = {
-                "storeNo": store_no,
+                "storeNo": store_no_session,
                 "productName": product_name,
                 "price": a,
                 "photoImgPaths": []
@@ -798,6 +796,7 @@ def upload_speacial_product(request):
         "discountRate": "10",
         "timesaleCnt": "10",
         "memo": "간단설명"
+        logo.png
         }"""
         response = requests.post(url,headers=headers, json = data)
         return redirect('time_speacial')
@@ -829,9 +828,106 @@ def time_speacial(request):
     context = data_list
     return render(request, 'time_speacial.html', context)
     
+from konlpy.tag import Komoran, Kkma, Okt
+from collections import Counter
+import numpy as np
+import itertools
 
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+from sentence_transformers import SentenceTransformer
 
+def brothertaeso(doc, top_n=3):
+    # Kkma 형태소 분석기 초기화
+    kkm = Kkma()
+    
+    # 줄 바꿈 및 공백 문자 제거
+    content = doc.replace('\n', '').replace('\t', '').replace('\r', '')
+    
+    # 명사만 추출
+    kkm_nouns = [word for word, pos in kkm.pos(content) if pos == 'NNG']
+    
+    # 가장 빈도가 높은 상위 n 개의 명사 추출
+    top_nouns = Counter(kkm_nouns).most_common(top_n)
+    
+    return top_nouns
 
+def extract_top_nouns(request):
+    print('extract_top_nouns')
+    if request.method == 'GET':
+        # GET 요청에서 fulltext 파라미터 추출
+        fulltext = request.GET.get('fulltext', '')
+
+        # 요청이 올바르지 않은 경우 처리
+        if not fulltext:
+            response_data = {'error': 'fulltext 파라미터가 필요합니다.'}
+            return JsonResponse(response_data, status=400)  # 400 Bad Request 반환
+
+        # fulltext를 처리하고 결과를 fulltext2에 할당하는 코드 (brothertaeso 함수 사용)
+        fulltext2 = brothertaeso(fulltext)
+
+        # JSON 응답 데이터 생성
+        response_data = {'keyword_mode': fulltext2}
+
+        # JsonResponse로 JSON 형식으로 응답
+        return JsonResponse(response_data)
+    elif request.method == 'POST':
+        # POST 요청에서 fulltext 데이터 추출
+        fulltext = request.POST.get('fulltext', '')
+
+        # 요청이 올바르지 않은 경우 처리
+        if not fulltext:
+            response_data = {'error': 'fulltext 데이터가 필요합니다.'}
+            return JsonResponse(response_data, status=400)  # 400 Bad Request 반환
+
+        # fulltext를 처리하고 결과를 fulltext2에 할당하는 코드 (brothertaeso 함수 사용)
+        fulltext2 = brothertaeso(fulltext)
+
+        # JSON 응답 데이터 생성
+        response_data = {'fulltext2': fulltext2}
+
+        # JsonResponse로 JSON 형식으로 응답
+        return JsonResponse(response_data)
+    else:
+        # 지원하지 않는 메서드인 경우
+        response_data = {'error': '지원하지 않는 HTTP 메서드입니다.'}
+        return JsonResponse(response_data, status=405)
+
+def keyword_value(request):
+    if request.method == 'GET':
+        doc = request.GET.get('fulltext', '')
+        n_gram_range = (2, 2)
+        stop_words = "english"
+
+        count = CountVectorizer(ngram_range=n_gram_range, stop_words=stop_words).fit([doc])
+        candidates = count.get_feature_names_out()
+
+        print('trigram 개수 :',len(candidates))
+        print('trigram 다섯개만 출력 :',candidates[:3])
+        candidates_list = candidates.tolist()
+        response_data = {'keyword_value': candidates_list[:3]}
+        return JsonResponse(response_data)
+    elif request.method == 'POST':
+        # POST 요청에서 fulltext 데이터 추출
+        fulltext = request.POST.get('fulltext', '')
+
+        # 요청이 올바르지 않은 경우 처리
+        if not fulltext:
+            response_data = {'error': 'fulltext 데이터가 필요합니다.'}
+            return JsonResponse(response_data, status=400)  # 400 Bad Request 반환
+
+        # fulltext를 처리하고 결과를 fulltext2에 할당하는 코드 (brothertaeso 함수 사용)
+        fulltext2 = brothertaeso(fulltext)
+
+        # JSON 응답 데이터 생성
+        response_data = {'fulltext2': fulltext2}
+
+        # JsonResponse로 JSON 형식으로 응답
+        return JsonResponse(response_data)
+    else:
+        # 지원하지 않는 메서드인 경우
+        response_data = {'error': '지원하지 않는 HTTP 메서드입니다.'}
+        return JsonResponse(response_data, status=405)
 
 
 
